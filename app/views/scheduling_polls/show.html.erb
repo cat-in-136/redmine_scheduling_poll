@@ -1,0 +1,27 @@
+<h2>PollController#show - <%= @poll.issue.subject %></h2>
+
+<%= @poll.users %>
+
+<% vote_values = 0.step(1.step(nil, 1).find { |v| vote_value(v) == vote_value(0) } - 1, 1).to_a.reverse %>
+
+<table>
+<thead>
+  <tr>
+    <th><!-- name --></th>
+    <% vote_values.each do |v| %>
+      <%= content_tag :td, vote_value(v) %>
+    <% end %>
+  </tr>
+</thead>
+<tbody>
+<% @poll.scheduling_poll_item.each do |item| %>
+  <%= content_tag :tr do %>
+    <%= content_tag :th, item.text %>
+    <% vote_values.each do |v| %>
+      <%= content_tag :td, item.scheduling_vote.where(:value => v).length %>
+    <% end %>
+  <% end %>
+<% end %>
+</tbody>
+</table>
+
