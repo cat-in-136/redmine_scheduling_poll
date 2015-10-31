@@ -11,12 +11,16 @@ class SchedulingPollItem < ActiveRecord::Base
     self.scheduling_vote.map {|v| v.user }
   end
 
-  def vote(user, value=5)
+  def vote(user, value=0)
     v = self.vote_by_user(user)
-    if v.nil?
-      v = self.scheduling_vote.create(:user => user, :value => value, :create_at => Time.now)
-    else
-      v.update(:value => value, :modify_at => Time.now)
+    unless value == 0
+      if v.nil?
+        v = self.scheduling_vote.create(:user => user, :value => value, :create_at => Time.now)
+      else
+        v.update(:value => value, :modify_at => Time.now)
+      end
+    else # remove vote
+      v.destroy unless v.nil?
     end
     v
   end

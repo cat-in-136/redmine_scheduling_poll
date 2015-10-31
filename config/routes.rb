@@ -3,3 +3,4 @@
 
 #get 'scheduling_polls', :to => 'scheduling_polls#index'
 get 'scheduling_polls/:id/show', :to => 'scheduling_polls#show'
+post 'scheduling_polls/:id/vote', :to => 'scheduling_polls#vote'
