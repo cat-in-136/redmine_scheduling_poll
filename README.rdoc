@@ -1,3 +1,19 @@
 = redmine_scheduling_poll
 
 Scheduling Poll is a plugin which provides simple polls to scheduling appointments on Redmine.
+
+
+== Developing Note
+
+* use pafcioooo/redmine_polls as a reference
+* belongs to issue (not project)
+* anybody can add alternative date
+
+This project is currently under *alpha* stage of development.
+
+1. Create this plugin as a just only scheduling-appointment app
+2. Integrate this plugin to redmine
+3. Enhance UX
+4. *Never* take consideration of DB-schema compatibility till release *0.1.0*.
+ 
+
