@@ -1,9 +1,8 @@
 <h2>PollController#show - <%= @poll.issue.subject %></h2>
 
-<%= @poll.users %>
+<% vote_values = 1.step(1.step(nil, 1).find { |v| vote_value(v) == vote_value(0) } - 1, 1).to_a.reverse %>
 
-<% vote_values = 0.step(1.step(nil, 1).find { |v| vote_value(v) == vote_value(0) } - 1, 1).to_a.reverse %>
-
+<%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
 <table>
 <thead>
   <tr>
@@ -11,6 +10,7 @@
     <% vote_values.each do |v| %>
       <%= content_tag :td, vote_value(v) %>
     <% end %>
+    <%= content_tag :td, User.current.name %>
   </tr>
 </thead>
 <tbody>
@@ -20,8 +20,27 @@
     <% vote_values.each do |v| %>
       <%= content_tag :td, item.scheduling_vote.where(:value => v).length %>
     <% end %>
+    <td>
+      <% current_vote = item.vote_by_user(User.current) %>
+      <% [vote_values, 0].flatten.each do |v| %>
+        <%= radio_button :scheduling_vote, item.id, v, :checked => vote_value(v) == vote_value(current_vote) %>
+        <%= label :scheduling_vote, item.id, vote_value(v), :value => v %>
+      <% end %>
+    </td>
   <% end %>
 <% end %>
 </tbody>
+<tfoot>
+  <tr>
+    <th></th>
+    <%= content_tag :td, nil, :colspan => vote_values.length %>
+    <td>
+      <%= submit_tag "Vote" %>
+      <%= submit_tag "Reset", :type => "reset", :name => nil %>
+    </td>
+  </tr>
+</tfoot>
 </table>
+
+<% end %>
 
