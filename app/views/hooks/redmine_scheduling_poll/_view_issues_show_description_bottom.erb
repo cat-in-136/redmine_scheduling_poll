@@ -1,0 +1,40 @@
+<hr />
+<div class="scheduling_poll">
+<% scheduling_poll = SchedulingPoll.find_by(:issue => @issue) %>
+<% if scheduling_poll %>
+<% vote_values = Hash[*SchedulingPollsController.helpers.scheduling_vote_values_array.flatten] %>
+  <div class="contextual">
+    <%= link_to 'Vote', :controller => 'scheduling_polls', :id => scheduling_poll.id, :action => 'show' %>
+  </div>
+  <p><strong>Scheduling Poll</strong></p>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th><!-- name --></th>
+          <% vote_values.each_pair do |k,v| %>
+            <%= content_tag :td, v %>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+      <% scheduling_poll.scheduling_poll_item.each do |item| %>
+        <tr>
+          <%= content_tag :th, item.text %>
+          <% vote_values.each_pair do |k,v| %>
+            <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else # unless scheduling_poll %>
+  <div class="contextual">
+    <%# TODO Add poll %>
+  </div>
+  <p><strong>Scheduling Poll</strong></p>
+<% end %>
+</div>
+
+

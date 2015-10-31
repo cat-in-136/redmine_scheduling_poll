@@ -1,3 +1,6 @@
+require 'redmine'
+require_dependency 'redmine_scheduling_poll/hooks'
+
 Redmine::Plugin.register :redmine_scheduling_poll do
   name 'Scheduling Poll plugin'
   author '@cat_in_136'

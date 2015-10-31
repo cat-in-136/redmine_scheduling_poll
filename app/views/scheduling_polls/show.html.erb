@@ -1,33 +1,34 @@
 <h2>PollController#show - <%= @poll.issue.subject %></h2>
 
-<% vote_values = 1.step(1.step(nil, 1).find { |v| vote_value(v) == vote_value(0) } - 1, 1).to_a.reverse %>
+<% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
 
 <%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
+
 <table>
 <thead>
   <tr>
     <th><!-- name --></th>
-    <% vote_values.each do |v| %>
-      <%= content_tag :td, vote_value(v) %>
+    <% vote_values.each_pair do |k,v| %>
+      <%= content_tag :td, v %>
     <% end %>
     <%= content_tag :td, User.current.name %>
   </tr>
 </thead>
 <tbody>
 <% @poll.scheduling_poll_item.each do |item| %>
-  <%= content_tag :tr do %>
+  <tr>
     <%= content_tag :th, item.text %>
-    <% vote_values.each do |v| %>
-      <%= content_tag :td, item.scheduling_vote.where(:value => v).length %>
+    <% vote_values.each_pair do |k,v| %>
+      <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
     <% end %>
     <td>
-      <% current_vote = item.vote_by_user(User.current) %>
-      <% [vote_values, 0].flatten.each do |v| %>
-        <%= radio_button :scheduling_vote, item.id, v, :checked => vote_value(v) == vote_value(current_vote) %>
-        <%= label :scheduling_vote, item.id, vote_value(v), :value => v %>
+      <% current_vote_value = scheduling_vote_value(item.vote_by_user(User.current)) %>
+      <% vote_values.merge(0 => scheduling_vote_value(0)).each_pair do |k,v| %>
+        <%= radio_button :scheduling_vote, item.id, k, :checked => (v == current_vote_value) %>
+        <%= label :scheduling_vote, item.id, v, :value => k %>
       <% end %>
     </td>
-  <% end %>
+  </tr>
 <% end %>
 </tbody>
 <tfoot>
