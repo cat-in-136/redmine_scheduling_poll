@@ -1,12 +1,15 @@
 <%= f.hidden_field :issue_id %>
 
 <div>
+  <p class="contextual">
+    <%= link_to_function 'Toggle Date Picker', 'scheduling_polls_update_date_picker("toggle")' %>
+  </p>
   <%= f.fields_for :scheduling_poll_item do |f_item| %>
     <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
   <% end %>
 
   <p>
-    <%= link_to_add_scheduling_poll_item_fields_function "Add item", f, :code_tmpl => '$(this).parent().before(%S)' do |f_item| %>
+    <%= link_to_add_scheduling_poll_item_fields_function "Add item", f, :code_tmpl => '$(this).parent().before(%S);scheduling_polls_update_date_picker()' do |f_item| %>
       <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
     <% end %>
   </p>
@@ -15,3 +18,26 @@
 <div class="actions">
   <%= f.submit %>
 </div>
+
+<%= javascript_tag <<"EOD"
+function scheduling_polls_update_date_picker(enable) {
+  "use strict";
+  if (enable === undefined) {
+    enable = ($("form .ui-datepicker-trigger").length > 0)? true : false;
+  } else if (enable === "toggle") {
+    enable = ($("form .ui-datepicker-trigger").length > 0)? false : true;
+  }
+  if (enable) {
+    $("form input[type=text]:not([disabled]):not([readonly])").datepicker({
+      dateFormat: 'yy-mm-dd', showOn: 'button', buttonImageOnly: true,
+      buttonImage: '#{path_to_image('/images/calendar.png')}',
+      showButtonPanel: true, showWeek: true, showOtherMonths: true,
+      selectOtherMonths: true, changeMonth: true, changeYear: true
+    });
+  } else {
+    $("form input[type=text]").datepicker("destroy");
+  }
+}
+$(function() { scheduling_polls_update_date_picker(true); });
+EOD
+%>
