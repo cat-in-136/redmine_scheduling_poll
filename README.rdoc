@@ -15,5 +15,8 @@ This project is currently under *alpha* stage of development.
 2. Integrate this plugin to redmine
 3. Enhance UX
 4. *Never* take consideration of DB-schema compatibility till release *0.1.0*.
+   * i.e. after you update (`git pull`) this plugin, you may have to execute as follows:
+       % bundle exec rake redmine:plugins:migrate NAME=redmine_scheduling_poll VERSION=0
+       % bundle exec rake redmine:plugins:migrate
  
 
