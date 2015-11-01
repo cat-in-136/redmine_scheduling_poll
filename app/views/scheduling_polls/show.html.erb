@@ -12,7 +12,9 @@
     <% vote_values.each_pair do |k,v| %>
       <%= content_tag :td, v %>
     <% end %>
-    <%= content_tag :td, User.current.name %>
+    <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
+      <%= content_tag :td, User.current.name %>
+    <% end %>
   </tr>
 </thead>
 <tbody>
@@ -22,16 +24,19 @@
     <% vote_values.each_pair do |k,v| %>
       <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
     <% end %>
-    <td>
-      <% current_vote_value = scheduling_vote_value(item.vote_by_user(User.current)) %>
-      <% vote_values.merge(0 => scheduling_vote_value(0)).each_pair do |k,v| %>
-        <%= radio_button :scheduling_vote, item.id, k, :checked => (v == current_vote_value) %>
-        <%= label :scheduling_vote, item.id, v, :value => k %>
-      <% end %>
-    </td>
+    <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
+      <td>
+        <% current_vote_value = scheduling_vote_value(item.vote_by_user(User.current)) %>
+        <% vote_values.merge(0 => scheduling_vote_value(0)).each_pair do |k,v| %>
+          <%= radio_button :scheduling_vote, item.id, k, :checked => (v == current_vote_value) %>
+          <%= label :scheduling_vote, item.id, v, :value => k %>
+        <% end %>
+      </td>
+    <% end %>
   </tr>
 <% end %>
 </tbody>
+<% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <tfoot>
   <tr>
     <th></th>
@@ -42,6 +47,7 @@
     </td>
   </tr>
 </tfoot>
+<% end %>
 </table>
 
 <% end %>

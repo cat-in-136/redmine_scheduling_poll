@@ -2,12 +2,17 @@ class SchedulingPollsController < ApplicationController
   unloadable
 
   before_action :set_scheduling_poll, :only => [:edit, :update, :show, :vote]
+  before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show]
+  before_action :ensure_allowed_to_vote_scheduling_polls, :only => [:edit, :update, :vote]
 
   def new
     @issue = Issue.find(params[:issue])
     @poll = SchedulingPoll.find_by(:issue => @issue)
     redirect_to @poll if @poll
     @poll = SchedulingPoll.new(:issue => @issue)
+    ensure_allowed_to_vote_scheduling_polls
+
+    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project, :global => true)
 
     3.times do
       @poll.scheduling_poll_item.build
@@ -18,6 +23,9 @@ class SchedulingPollsController < ApplicationController
   def create
     redirect_to :action => 'vote' if SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
     @poll = SchedulingPoll.new(scheduling_poll_params)
+    ensure_allowed_to_vote_scheduling_polls
+
+    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project, :global => true)
 
     if @poll.save
       flash[:notice] = 'Poll created.'
@@ -28,12 +36,14 @@ class SchedulingPollsController < ApplicationController
   end
 
   def edit
+    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project, :global => true)
     1.times do
       @poll.scheduling_poll_item.build
     end
   end
 
   def update
+    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project, :global => true)
     if @poll.update(scheduling_poll_params)
       flash[:notice] = 'Poll updated.'
       redirect_to @poll
@@ -58,6 +68,12 @@ class SchedulingPollsController < ApplicationController
   private
   def set_scheduling_poll
     @poll = SchedulingPoll.find(params[:id])
+  end
+  def ensure_allowed_to_view_scheduling_polls
+    raise ::Unauthorized unless User.current.allowed_to?(:view_schduling_polls, @poll.issue.project, :global => true)
+  end
+  def ensure_allowed_to_vote_scheduling_polls
+    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project, :global => true)
   end
 
   def scheduling_poll_params

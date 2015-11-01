@@ -1,4 +1,6 @@
+<% if @project.module_enabled?(:scheduling_polls) %>
 <hr />
+<% if User.current.allowed_to?(:view_schduling_polls, @project) %>
 <div class="scheduling_poll">
 <% scheduling_poll = SchedulingPoll.find_by(:issue => @issue) %>
 <% if scheduling_poll %>
@@ -35,6 +37,9 @@
   </div>
   <p><strong>Scheduling Poll</strong></p>
 <% end %>
+<% else %><%# unless User.current.allowed_to?(:view_schduling_polls, @project) %>
+  <p><strong>Scheduling Poll</strong></p>
+<% end %>
 </div>
 
-
+<% end %><%# @project.module_enabled?(:scheduling_polls) %>
