@@ -1,15 +1,16 @@
-<%= form_for @poll, :url => url_for(:controller => "scheduling_polls", :action => "create") do |f| %>
-  <%= f.hidden_field :issue_id %>
+<%= f.hidden_field :issue_id %>
 
-  <%= f.fields_for :scheduling_poll_item do |f_item| %>
-    <p>
-      <%= f_item.text_field :text %>
-      <%= f_item.check_box :_destroy %>
-      <%= f_item.label :_destroy, "Remove Item" %>
-    </p>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<div>
+<%= f.fields_for :scheduling_poll_item do |f_item| %>
+  <p>
+    <%= f_item.text_field :text, :readonly => f_item.object.persisted? %>
+    <%= f_item.check_box :_destroy %>
+    <%= f_item.label :_destroy, "Remove Item" %>
+  </p>
 <% end %>
+  <%# TODO Add item %>
+</div>
+
+<div class="actions">
+  <%= f.submit %>
+</div>

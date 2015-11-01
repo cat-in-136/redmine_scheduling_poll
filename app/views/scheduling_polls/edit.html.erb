@@ -1,8 +1,8 @@
-<h2>SchedulingPolls#edit</h2>
+<h2>SchedulingPolls#new</h2>
 
 <div id="scheduling-poll">
   <h3><%= link_to @poll.issue.subject, issue_path(@poll.issue) %></h3>
-  <%= form_for @poll, :url => url_for(:controller => "scheduling_polls", :action => "create") do |f| %>
+  <%= form_for @poll, :url => url_for(:controller => "scheduling_polls", :action => "update") do |f| %>
     <%= render :partial => 'form', :locals => { :f => f} %>
   <% end %>
 </div>

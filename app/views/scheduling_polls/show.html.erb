@@ -1,7 +1,8 @@
 <h2>PollController#show - <%= @poll.issue.subject %></h2>
 
-<% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
+<%= link_to 'Edit poll items', scheduling_poll_edit_path(@poll) %>
 
+<% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
 <%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
 
 <table>

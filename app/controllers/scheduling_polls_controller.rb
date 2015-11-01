@@ -1,7 +1,7 @@
 class SchedulingPollsController < ApplicationController
   unloadable
 
-  before_action :set_scheduling_poll, :only => [:show, :vote]
+  before_action :set_scheduling_poll, :only => [:edit, :update, :show, :vote]
 
   def new
     @issue = Issue.find(params[:issue])
@@ -10,7 +10,7 @@ class SchedulingPollsController < ApplicationController
     @poll = SchedulingPoll.new(:issue => @issue)
 
     3.times do
-      @poll.scheduling_poll_item.build(:text => '')
+      @poll.scheduling_poll_item.build
     end
   end
 
@@ -23,6 +23,21 @@ class SchedulingPollsController < ApplicationController
       redirect_to @poll
     else
       render :new
+    end
+  end
+
+  def edit
+    1.times do
+      @poll.scheduling_poll_item.build
+    end
+  end
+
+  def update
+    if @poll.update(scheduling_poll_params)
+      flash[:notice] = 'Poll updated.'
+      redirect_to @poll
+    else
+      render :edit
     end
   end
 
@@ -45,7 +60,7 @@ class SchedulingPollsController < ApplicationController
   end
 
   def scheduling_poll_params
-    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:text, :_destroy])
+    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:id, :text, :_destroy])
   end
 
 
