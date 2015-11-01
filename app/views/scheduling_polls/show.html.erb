@@ -64,5 +64,30 @@
 <% else %><%# if @poll.scheduling_poll_item.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
+
 </div>
+
+<h3>Voting Result</h3>
+<% unless @poll.users.empty? %>
+<table class="list">
+  <thead>
+    <th></th>
+    <% @poll.scheduling_poll_item.each do |item| %>
+    <th><%= item.text %></th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% @poll.users.each do |user| %>
+    <tr>
+      <td><%= link_to user.name, user_path(user) %></td>
+      <% @poll.scheduling_poll_item.each do |item| %>
+        <td><%= scheduling_vote_value(item.vote_by_user(user)) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %><%# if @poll.scheduling_poll_item.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
 
