@@ -1,5 +1,6 @@
 require 'redmine'
 require_dependency 'redmine_scheduling_poll/hooks'
+require_dependency 'redmine_scheduling_poll/macros'
 
 Redmine::Plugin.register :redmine_scheduling_poll do
   name 'Scheduling Poll plugin'
