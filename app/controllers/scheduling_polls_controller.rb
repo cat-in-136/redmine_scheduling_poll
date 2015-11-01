@@ -12,6 +12,7 @@ class SchedulingPollsController < ApplicationController
     3.times do
       @poll.scheduling_poll_item.build
     end
+    render :edit
   end
 
   def create

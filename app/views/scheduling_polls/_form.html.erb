@@ -1,14 +1,13 @@
 <%= f.hidden_field :issue_id %>
 
 <div>
-<%= f.fields_for :scheduling_poll_item do |f_item| %>
-  <p>
-    <%= f_item.text_field :text, :readonly => f_item.object.persisted? %>
-    <%= f_item.check_box :_destroy %>
-    <%= f_item.label :_destroy, "Remove Item" %>
-  </p>
-<% end %>
-  <%# TODO Add item %>
+  <%= f.fields_for :scheduling_poll_item do |f_item| %>
+    <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
+  <% end %>
+
+  <%= link_to_add_scheduling_poll_item_fields_function "Add item", f, :target => '$(this).before(%S)' do |f_item| %>
+    <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
+  <% end %>
 </div>
 
 <div class="actions">

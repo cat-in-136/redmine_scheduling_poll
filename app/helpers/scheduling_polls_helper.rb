@@ -19,4 +19,14 @@ module SchedulingPollsHelper
     vote_value_array.reverse
   end
 
+  def link_to_add_scheduling_poll_item_fields_function(name, f, option=nil, &block)
+    opt = { :code_tmpl => '$(this).before(%S)' }.merge(option)
+
+    fields = f.fields_for(:scheduling_poll_item, SchedulingPollItem.new, :child_index => "%CHILD_INDEX%", &block) 
+    js_inner_html = "\"#{escape_javascript(fields)}\".replace(/%CHILD_INDEX%/g, new Date().getTime())"
+    js_func = opt[:code_tmpl].sub(/%S/, js_inner_html)
+
+    link_to_function name, js_func
+  end
+
 end
