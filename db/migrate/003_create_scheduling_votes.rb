@@ -4,7 +4,7 @@ class CreateSchedulingVotes < ActiveRecord::Migration
       t.integer :user_id, :null => false
       t.integer :scheduling_poll_item_id, :null => false
       t.integer :value, :null => false
-      t.timestamp :create_at, :null => false
+      t.timestamp :create_at
       t.timestamp :modify_at
     end
   end
