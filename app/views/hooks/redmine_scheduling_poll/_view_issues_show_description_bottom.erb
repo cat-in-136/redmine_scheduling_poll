@@ -4,7 +4,7 @@
 <% if scheduling_poll %>
 <% vote_values = Hash[*SchedulingPollsController.helpers.scheduling_vote_values_array.flatten] %>
   <div class="contextual">
-    <%= link_to 'Vote', :controller => 'scheduling_polls', :id => scheduling_poll.id, :action => 'show' %>
+    <%= link_to 'Vote', scheduling_poll_path(scheduling_poll) %>
   </div>
   <p><strong>Scheduling Poll</strong></p>
   <div>
@@ -31,7 +31,7 @@
   </div>
 <% else # unless scheduling_poll %>
   <div class="contextual">
-    <%# TODO Add poll %>
+    <%= link_to 'Add', scheduling_polls_new_path(:issue => @issue) %>
   </div>
   <p><strong>Scheduling Poll</strong></p>
 <% end %>

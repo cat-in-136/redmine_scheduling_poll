@@ -1,18 +1,52 @@
 class SchedulingPollsController < ApplicationController
   unloadable
 
+  before_action :set_scheduling_poll, :only => [:show, :vote]
+
+  def new
+    @issue = Issue.find(params[:issue])
+    @poll = SchedulingPoll.find_by(:issue => @issue)
+    redirect_to @poll if @poll
+    @poll = SchedulingPoll.new(:issue => @issue)
+
+    3.times do
+      @poll.scheduling_poll_item.build(:text => '')
+    end
+  end
+
+  def create
+    redirect_to :action => 'vote' if SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
+    @poll = SchedulingPoll.new(scheduling_poll_params)
+
+    if @poll.save
+      flash[:notice] = 'Poll created.'
+      redirect_to @poll
+    else
+      render :new
+    end
+  end
+
   def show
-    @poll = SchedulingPoll.find(params[:id])
   end
 
   def vote
-    poll = SchedulingPoll.find(params[:id])
     user = User.current
-    poll.scheduling_poll_item.each do |item|
+    @poll.scheduling_poll_item.each do |item|
       item.vote(user, params[:scheduling_vote][item.id.to_s])
     end
 
     flash[:notice] = 'Vote saved.'
     redirect_to :action => 'show'
   end
+
+  private
+  def set_scheduling_poll
+    @poll = SchedulingPoll.find(params[:id])
+  end
+
+  def scheduling_poll_params
+    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:text, :_destroy])
+  end
+
+
 end
