@@ -1,7 +1,9 @@
-<h2>SchedulingPolls#edit</h2>
+<%= content_for :sidebar do %>
+  <%= render_date_related_parameter_of_issue(@poll.issue) %>
+<% end %>
 
-<div id="scheduling-poll">
-  <h3><%= link_to @poll.issue.subject, issue_path(@poll.issue) %></h3>
+<h2>Edit poll items</h2>
+<div id="scheduling-poll" class="box">
   <% action = (@poll.persisted?)? "update" : "create" %>
   <%= form_for @poll, :url => url_for(:controller => "scheduling_polls", :action => action) do |f| %>
     <%= render :partial => 'form', :locals => { :f => f} %>

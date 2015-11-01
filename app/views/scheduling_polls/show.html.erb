@@ -1,26 +1,36 @@
-<h2>PollController#show - <%= @poll.issue.subject %></h2>
+<%= content_for :sidebar do %>
+  <%= render_date_related_parameter_of_issue(@poll.issue) %>
+<% end %>
 
-<%= link_to 'Edit poll items', scheduling_poll_edit_path(@poll) %>
+<h2>Vote</h2>
+
+<div id="scheduling-poll" class="box">
+<div class="contextual">
+  <%= link_to 'Edit poll items', scheduling_poll_edit_path(@poll) %>
+</div>
+<h3><%= @poll.issue.subject %></h3>
+
+<% unless @poll.scheduling_poll_item.empty? %>
 
 <% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
 <%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
 
-<table>
+<table class="list">
 <thead>
   <tr>
     <th><!-- name --></th>
     <% vote_values.each_pair do |k,v| %>
-      <%= content_tag :td, v %>
+      <%= content_tag :th, v %>
     <% end %>
     <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
-      <%= content_tag :td, User.current.name %>
+      <%= content_tag :th, User.current.name %>
     <% end %>
   </tr>
 </thead>
 <tbody>
 <% @poll.scheduling_poll_item.each do |item| %>
   <tr>
-    <%= content_tag :th, item.text %>
+    <%= content_tag :td, item.text %>
     <% vote_values.each_pair do |k,v| %>
       <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
     <% end %>
@@ -39,7 +49,7 @@
 <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <tfoot>
   <tr>
-    <th></th>
+    <td></td>
     <%= content_tag :td, nil, :colspan => vote_values.length %>
     <td>
       <%= submit_tag "Vote" %>
@@ -51,4 +61,8 @@
 </table>
 
 <% end %>
+<% else %><%# if @poll.scheduling_poll_item.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+</div>
 

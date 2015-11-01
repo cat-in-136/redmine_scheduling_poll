@@ -15,14 +15,14 @@
         <tr>
           <th><!-- name --></th>
           <% vote_values.each_pair do |k,v| %>
-            <%= content_tag :td, v %>
+            <%= content_tag :th, v %>
           <% end %>
         </tr>
       </thead>
       <tbody>
       <% scheduling_poll.scheduling_poll_item.each do |item| %>
         <tr>
-          <%= content_tag :th, item.text %>
+          <%= content_tag :td, item.text %>
           <% vote_values.each_pair do |k,v| %>
             <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
           <% end %>
