@@ -30,6 +30,9 @@ class SchedulingPollsController < ApplicationController
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
 
     if @poll.save
+      journal = @poll.issue.init_journal(User.current, "{{scheduling_poll(#{@poll.id})}} created for the issue.")
+      journal.save
+
       flash[:notice] = 'Poll created.'
       redirect_to @poll
     else
