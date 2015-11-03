@@ -17,6 +17,7 @@ bundle exec rake db:migrate
 bundle exec rake redmine:load_default_data
 
 # Copy assets & execute plugin's migration
+cp -r plugins/${PLUGIN_NAME}/test/fixtures/*.* test/fixtures
 bundle exec rake redmine:plugins NAME=${PLUGIN_NAME}
 
 # Execute test

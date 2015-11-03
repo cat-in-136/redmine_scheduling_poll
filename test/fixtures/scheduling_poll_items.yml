@@ -1,0 +1,25 @@
+---
+scheduling_poll_item_001:
+  id: 1
+  scheduling_poll_id: 1
+  text: scheduling_poll_item_001
+scheduling_poll_item_002:
+  id: 2
+  scheduling_poll_id: 1
+  text: scheduling_poll_item_002
+scheduling_poll_item_003:
+  id: 3
+  scheduling_poll_id: 1
+  text: scheduling_poll_item_003
+scheduling_poll_item_004:
+  id: 4
+  scheduling_poll_id: 2
+  text: scheduling_poll_item_004
+scheduling_poll_item_005:
+  id: 5
+  scheduling_poll_id: 2
+  text: scheduling_poll_item_005
+scheduling_poll_item_006:
+  id: 6
+  scheduling_poll_id: 2
+  text: scheduling_poll_item_006
