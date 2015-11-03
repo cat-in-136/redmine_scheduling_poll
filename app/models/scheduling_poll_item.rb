@@ -4,6 +4,7 @@ class SchedulingPollItem < ActiveRecord::Base
   belongs_to :scheduling_poll
   has_many :scheduling_vote, :dependent => :destroy
 
+  validates :scheduling_poll, :presence => true
   validates :text, :presence => true, :allow_blank => false
 
   def vote_by_user(user)

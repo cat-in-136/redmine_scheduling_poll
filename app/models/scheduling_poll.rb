@@ -5,6 +5,8 @@ class SchedulingPoll < ActiveRecord::Base
   has_many :scheduling_poll_item, :dependent => :destroy
   accepts_nested_attributes_for :scheduling_poll_item, :reject_if => :reject_scheduling_poll_item, :allow_destroy => true
 
+  validates :issue, :presence => true
+
   def votes_by_user(user)
     self.scheduling_poll_item.map { |i| i.votes_by_user(user) }.flatten
   end
