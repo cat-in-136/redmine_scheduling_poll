@@ -1,0 +1,8 @@
+language: ruby
+matrix:
+  include:
+    - rvm: 2.2.3
+      env: REDMINE_VERSION=3.1.1
+before_install: bash -x bin/travisci_before_install.sh
+script: bash -x bin/travisci_exec_test.sh
+
