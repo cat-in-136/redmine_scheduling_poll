@@ -49,4 +49,45 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
     users = User.where(user_id.eq(1).or(user_id.eq(2)))
     assert_equal users.sort, scheduling_poll_item.users.sort
   end
+
+  test "vote with non-zero value shall add the vote or update" do
+    scheduling_poll_item = SchedulingPollItem.new
+    scheduling_poll_item.text = "__test_item__"
+    scheduling_poll_item.scheduling_poll = SchedulingPoll.first
+    assert scheduling_poll_item.save
+
+    user = User.find(5)
+
+    assert_empty SchedulingVote.where(:user => user)
+    scheduling_poll_item.vote(user, 1)
+    assert_equal 1, SchedulingVote.where(:user => user, :scheduling_poll_item => scheduling_poll_item).length
+    assert_equal 1, SchedulingVote.find_by(:user => user, :scheduling_poll_item => scheduling_poll_item).value
+
+    scheduling_poll_item.vote(user, 2)
+    assert_equal 1, SchedulingVote.where(:user => user, :scheduling_poll_item => scheduling_poll_item).length
+    assert_equal 2, SchedulingVote.find_by(:user => user, :scheduling_poll_item => scheduling_poll_item).value
+
+    assert scheduling_poll_item.destroy
+  end
+
+  test "vote with zero value shall remove the vote" do
+    scheduling_poll_item = SchedulingPollItem.new
+    scheduling_poll_item.text = "__test_item__"
+    scheduling_poll_item.scheduling_poll = SchedulingPoll.first
+    assert scheduling_poll_item.save
+
+    user = User.find(5)
+
+    assert_empty SchedulingVote.where(:user => user)
+    scheduling_poll_item.vote(user, 0)
+    assert_equal 0, SchedulingVote.where(:user => user, :scheduling_poll_item => scheduling_poll_item).length
+
+    scheduling_poll_item.vote(user, 1)
+    assert_equal 1, SchedulingVote.where(:user => user, :scheduling_poll_item => scheduling_poll_item).length
+
+    scheduling_poll_item.vote(user, 0)
+    assert_equal 0, SchedulingVote.where(:user => user, :scheduling_poll_item => scheduling_poll_item).length
+
+    assert scheduling_poll_item.destroy
+  end
 end
