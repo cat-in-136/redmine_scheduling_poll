@@ -8,7 +8,7 @@ class SchedulingPoll < ActiveRecord::Base
   validates :issue, :presence => true
 
   def votes_by_user(user)
-    self.scheduling_poll_item.map { |i| i.votes_by_user(user) }.flatten
+    self.scheduling_poll_item.map { |i| i.vote_by_user(user) }
   end
   def users
     self.scheduling_poll_item.map { |i| i.users }.flatten.uniq { |u| u.id }
