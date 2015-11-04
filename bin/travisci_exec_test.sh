@@ -9,16 +9,5 @@ PLUGIN_NAME=redmine_scheduling_poll
 
 cd redmine-${REDMINE_VERSION}
 
-bundle install --path=vendor/bundle
-
-# Initialize redmine
-bundle exec rake generate_secret_token
-bundle exec rake db:migrate
-bundle exec rake redmine:load_default_data
-
-# Copy assets & execute plugin's migration
-cp -r plugins/${PLUGIN_NAME}/test/fixtures/*.* test/fixtures
-bundle exec rake redmine:plugins NAME=${PLUGIN_NAME}
-
 # Execute test
 bundle exec rake redmine:plugins:test NAME=${PLUGIN_NAME}
