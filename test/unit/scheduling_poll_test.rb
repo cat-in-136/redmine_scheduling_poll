@@ -12,6 +12,17 @@ class SchedulingPollTest < ActiveSupport::TestCase
     assert scheduling_poll.destroy
   end
 
+  test "shall reject the scheduling poll items which has empty text" do
+    scheduling_poll = SchedulingPoll.new
+    scheduling_poll.issue = Issue.first
+    scheduling_poll.scheduling_poll_item.build(:text => '')
+    assert_not scheduling_poll.save
+    scheduling_poll.scheduling_poll_item.build(:text => ' ')
+    assert_not scheduling_poll.save
+    scheduling_poll.scheduling_poll_item.build(:text => '\t\r\n')
+    assert_not scheduling_poll.save
+  end
+
   test "votes_by_user shall return all the votes which the user votes" do
     scheduling_poll = SchedulingPoll.find(1)
 
