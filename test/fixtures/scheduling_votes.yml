@@ -39,5 +39,5 @@ scheduling_vote_007:
   id: 7
   user_id: 3
   scheduling_poll_item_id: 1
-  value: 0
+  value: 1
   create_at: <%= 1.minute.ago.to_s(:db) %>

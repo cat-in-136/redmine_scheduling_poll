@@ -21,6 +21,12 @@ class SchedulingPollTest < ActiveSupport::TestCase
     assert_equal votes.sort, scheduling_poll.votes_by_user(user).sort
   end
 
+  test "votes_by_user shall return empty for user who does not vote" do
+    scheduling_poll = SchedulingPoll.find(1)
+    user = User.find(5)
+    assert_empty scheduling_poll.votes_by_user(user)
+  end
+
   test "users shall return all the users who vote the poll" do
     scheduling_poll = SchedulingPoll.find(1)
     user_id = User.arel_table[:id]

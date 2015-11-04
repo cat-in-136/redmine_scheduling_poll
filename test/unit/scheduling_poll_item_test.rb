@@ -28,4 +28,25 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
     assert scheduling_poll_item.save
     assert scheduling_poll_item.destroy
   end
+
+  test "vote_by_user shall return the vote which the user votes" do
+    scheduling_poll_item = SchedulingPollItem.find(1)
+    user = User.find(1)
+    assert_equal SchedulingVote.find(1), scheduling_poll_item.vote_by_user(user)
+
+    user = User.find(3)
+    assert_equal SchedulingVote.find(7), scheduling_poll_item.vote_by_user(user)
+  end
+
+  test "users shall return all the users who vote the item" do
+    user_id = User.arel_table[:id]
+
+    scheduling_poll_item = SchedulingPollItem.find(1)
+    users = User.where(user_id.eq(1).or(user_id.eq(2).or(user_id.eq(3))))
+    assert_equal users.sort, scheduling_poll_item.users.sort
+
+    scheduling_poll_item = SchedulingPollItem.find(2)
+    users = User.where(user_id.eq(1).or(user_id.eq(2)))
+    assert_equal users.sort, scheduling_poll_item.users.sort
+  end
 end
