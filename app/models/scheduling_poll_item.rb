@@ -15,6 +15,7 @@ class SchedulingPollItem < ActiveRecord::Base
   end
 
   def vote(user, value=0)
+    value = value.to_i
     v = self.vote_by_user(user)
     unless value == 0
       if v.nil?
