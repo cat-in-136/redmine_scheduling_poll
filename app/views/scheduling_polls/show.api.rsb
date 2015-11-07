@@ -1,0 +1,17 @@
+api.scheduling_poll do
+  api.id @poll.id
+  api.issue :id => @poll.issue.id, :name => @poll.issue.subject
+  api.created_at @poll.created_at
+  @poll.scheduling_poll_item.each do |item|
+    api.scheduling_poll_item :id => item.id, :text => item.text do
+      item.scheduling_vote.each do |vote|
+        api.scheduling_vote do
+          api.user :id => vote.user.id, :name => vote.user.name
+          api.value :value => vote.value, :text => scheduling_vote_value(vote.value)
+          api.create_at vote.create_at if vote.create_at
+          api.modify_at vote.modify_at if vote.modify_at
+        end
+      end
+    end
+  end
+end

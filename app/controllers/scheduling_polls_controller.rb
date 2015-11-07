@@ -34,10 +34,18 @@ class SchedulingPollsController < ApplicationController
       journal = @poll.issue.init_journal(User.current, "{{scheduling_poll(#{@poll.id})}} created for the issue.")
       journal.save
 
-      flash[:notice] = 'Poll created.'
-      redirect_to @poll
+      respond_to do |format|
+        format.html {
+          flash[:notice] = 'Poll created.'
+          redirect_to @poll
+        }
+        format.api { render_api_ok }
+      end
     else
-      render :new
+      respond_to do |format|
+        format.html { render :new }
+        format.api { render_validation_errors(@poll) }
+      end
     end
   end
 
@@ -59,6 +67,10 @@ class SchedulingPollsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.api
+    end
   end
 
   def vote
@@ -67,8 +79,13 @@ class SchedulingPollsController < ApplicationController
       item.vote(user, params[:scheduling_vote][item.id.to_s])
     end
 
-    flash[:notice] = 'Vote saved.'
-    redirect_to :action => 'show'
+    respond_to do |format|
+      format.html {
+        flash[:notice] = 'Vote saved.'
+        redirect_to :action => 'show'
+      }
+      format.api { render_api_ok }
+    end
   end
 
   private
