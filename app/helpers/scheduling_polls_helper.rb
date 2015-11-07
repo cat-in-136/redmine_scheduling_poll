@@ -8,7 +8,7 @@ module SchedulingPollsHelper
   def scheduling_vote_values_array
     vote_value_0 = scheduling_vote_value(0)
     vote_value_array = []
-    1.step(nil, 1).each do |v|
+    1.step(0xFFFF, 1).each do |v|
       vote_value_v = scheduling_vote_value(v)
       if (vote_value_v == vote_value_0)
         break
