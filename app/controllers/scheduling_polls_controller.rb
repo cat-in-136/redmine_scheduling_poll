@@ -78,6 +78,10 @@ class SchedulingPollsController < ApplicationController
     @poll.scheduling_poll_item.each do |item|
       item.vote(user, params[:scheduling_vote][item.id.to_s])
     end
+    unless params[:vote_comment].empty?
+      journal = @poll.issue.init_journal(user, params[:vote_comment])
+      @poll.issue.save
+    end
 
     respond_to do |format|
       format.html {
