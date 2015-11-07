@@ -9,7 +9,7 @@ class SchedulingPollsController < ApplicationController
     @issue = Issue.find(params[:issue])
     @project = @issue.project
     @poll = SchedulingPoll.find_by(:issue => @issue)
-    redirect_to @poll if @poll
+    return redirect_to @poll if @poll
     @poll = SchedulingPoll.new(:issue => @issue)
     ensure_allowed_to_vote_scheduling_polls
 
@@ -22,7 +22,8 @@ class SchedulingPollsController < ApplicationController
   end
 
   def create
-    redirect_to :action => 'vote' if SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
+    @poll = SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
+    return redirect_to @poll if @poll
     @poll = SchedulingPoll.new(scheduling_poll_params)
     ensure_allowed_to_vote_scheduling_polls
     @project = @poll.issue.project
