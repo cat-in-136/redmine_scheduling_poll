@@ -32,7 +32,7 @@ class SchedulingPollsController < ApplicationController
 
     if @poll.save
       journal = @poll.issue.init_journal(User.current, "{{scheduling_poll(#{@poll.id})}} created for the issue.")
-      journal.save
+      @poll.issue.save
 
       respond_to do |format|
         format.html {
