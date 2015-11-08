@@ -9,7 +9,8 @@
   <% end %>
 
   <p>
-    <%= link_to_add_scheduling_poll_item_fields_function "Add item", f, :code_tmpl => '$(this).parent().before(%S);scheduling_polls_update_date_picker()' do |f_item| %>
+    <%= link_to_add_scheduling_poll_item_fields_function "Add item", f,
+          :code_tmpl => '$(this).parent().before(%S);scheduling_polls_update_date_picker()', :class => 'icon icon-add' do |f_item| %>
       <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
     <% end %>
   </p>
