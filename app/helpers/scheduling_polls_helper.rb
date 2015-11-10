@@ -13,8 +13,8 @@ module SchedulingPollsHelper
   def scheduling_vote_values_array
     vote_value_array = []
     1.step(5, 1).each do |v|
-      vote_value_v = Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_#{v}"]
-      vote_value_array << [v, vote_value_v] unless vote_value_v.blank?
+      vote_value_v = scheduling_vote_value(v)
+      vote_value_array << [v, vote_value_v] unless vote_value_v == '-'
     end
     vote_value_array.reverse
   end
