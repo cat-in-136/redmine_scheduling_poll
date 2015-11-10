@@ -7,12 +7,13 @@
   <%= f.fields_for :scheduling_poll_item do |f_item| %>
     <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
   <% end %>
-
-  <p>
-    <%= link_to_add_scheduling_poll_item_fields_function "Add item", f,
-          :code_tmpl => '$(this).parent().before(%S);scheduling_polls_update_date_picker()', :class => 'icon icon-add' do |f_item| %>
+  <% add_item_tmpl = capture do %>
+    <%= f.fields_for :scheduling_poll_item, SchedulingPollItem.new, :child_index => "CHILD_INDEX" do |f_item| %>
       <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
     <% end %>
+  <% end %>
+  <p>
+    <%= link_to_function 'Add item', "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
   </p>
 </div>
 
@@ -20,7 +21,7 @@
   <%= f.submit %>
 </div>
 
-<%= javascript_tag <<"EOD"
+<%= javascript_tag <<EOD
 function scheduling_polls_update_date_picker(enable) {
   "use strict";
   if (enable === undefined) {
@@ -40,5 +41,12 @@ function scheduling_polls_update_date_picker(enable) {
   }
 }
 $(function() { scheduling_polls_update_date_picker(true); });
+function scheduling_polls_add_item(template) {
+  "use strict";
+
+  var child_index = $("#scheduling_poll_add_item_link").parents("form").find("input[type=text][id^=scheduling_poll_scheduling_poll_item_attributes_]").length;
+  $("#scheduling_poll_add_item_link").parent().before(template.replace(/CHILD_INDEX/g, child_index));
+  scheduling_polls_update_date_picker();
+}
 EOD
 %>
