@@ -14,4 +14,12 @@ Redmine::Plugin.register :redmine_scheduling_poll do
     permission :view_schduling_polls, :polls => [:show]
     permission :vote_schduling_polls, :polls => [:new, :create, :edit, :update, :vote]
   end
+
+  settings :default => {
+    'scheduling_vote_value_5' => '',
+    'scheduling_vote_value_4' => '',
+    'scheduling_vote_value_3' => 'OK',
+    'scheduling_vote_value_2' => 'maybe',
+    'scheduling_vote_value_1' => 'NG',
+  }, :partial => 'settings/scheduling_poll_settings'
 end

@@ -2,19 +2,19 @@ module SchedulingPollsHelper
 
   def scheduling_vote_value(val=0)
     val = val.value if val.kind_of? SchedulingVote
-    { 1 => 'no', 2 => 'maybe', 3 => 'ok' }[val] || '-'
+    str = ''
+    if ((0 < val) && (val <= 5))
+      str = Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_#{val}"]
+    end
+    str = '-' if str.blank?
+    str
   end
 
   def scheduling_vote_values_array
-    vote_value_0 = scheduling_vote_value(0)
     vote_value_array = []
-    1.step(0xFFFF, 1).each do |v|
-      vote_value_v = scheduling_vote_value(v)
-      if (vote_value_v == vote_value_0)
-        break
-      else
-        vote_value_array << [v, vote_value_v]
-      end
+    1.step(5, 1).each do |v|
+      vote_value_v = Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_#{v}"]
+      vote_value_array << [v, vote_value_v] unless vote_value_v.blank?
     end
     vote_value_array.reverse
   end
