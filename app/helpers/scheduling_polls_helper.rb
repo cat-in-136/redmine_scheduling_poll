@@ -3,7 +3,7 @@ module SchedulingPollsHelper
   def scheduling_vote_value(val=0)
     val = val.value if val.kind_of? SchedulingVote
     str = ''
-    if ((0 < val) && (val <= 5))
+    if ((val.present?) && (0 < val) && (val <= 5))
       str = Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_#{val}"]
     end
     str = '-' if str.blank?
