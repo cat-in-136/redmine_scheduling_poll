@@ -38,9 +38,9 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
 
     scheduling_poll_items = SchedulingPollItem.where(:scheduling_poll_id => 2).sorted
     assert_equal 3, scheduling_poll_items.length
-    assert_equal SchedulingPollItem.find(4), scheduling_poll_items[0]
+    assert_equal SchedulingPollItem.find(6), scheduling_poll_items[0]
     assert_equal SchedulingPollItem.find(5), scheduling_poll_items[1]
-    assert_equal SchedulingPollItem.find(6), scheduling_poll_items[2]
+    assert_equal SchedulingPollItem.find(4), scheduling_poll_items[2]
   end
 
   test "vote_by_user shall return the vote which the user votes" do
