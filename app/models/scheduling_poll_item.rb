@@ -4,6 +4,8 @@ class SchedulingPollItem < ActiveRecord::Base
   belongs_to :scheduling_poll
   has_many :scheduling_vote, :dependent => :destroy
 
+  scope :sorted, lambda { order(:position => :asc) }
+
   validates :scheduling_poll, :presence => true
   validates :text, :presence => true, :allow_blank => false
 

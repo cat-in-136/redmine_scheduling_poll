@@ -29,6 +29,20 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
     assert scheduling_poll_item.destroy
   end
 
+  test "sorted shall be sorted in ascending order of position" do
+    scheduling_poll_items = SchedulingPollItem.where(:scheduling_poll_id => 1).sorted
+    assert_equal 3, scheduling_poll_items.length
+    assert_equal SchedulingPollItem.find(1), scheduling_poll_items[0]
+    assert_equal SchedulingPollItem.find(2), scheduling_poll_items[1]
+    assert_equal SchedulingPollItem.find(3), scheduling_poll_items[2]
+
+    scheduling_poll_items = SchedulingPollItem.where(:scheduling_poll_id => 2).sorted
+    assert_equal 3, scheduling_poll_items.length
+    assert_equal SchedulingPollItem.find(4), scheduling_poll_items[0]
+    assert_equal SchedulingPollItem.find(5), scheduling_poll_items[1]
+    assert_equal SchedulingPollItem.find(6), scheduling_poll_items[2]
+  end
+
   test "vote_by_user shall return the vote which the user votes" do
     scheduling_poll_item = SchedulingPollItem.find(1)
     user = User.find(1)
