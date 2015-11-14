@@ -9,7 +9,8 @@ wget http://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
 tar zxf redmine-${REDMINE_VERSION}.tar.gz
 
 # Clone plugin files to plugin directory
-git clone . redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
+mkdir redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
+cp $(ls | grep -v redmine-) redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
 
 # Create necessary files
 cat > redmine-${REDMINE_VERSION}/config/database.yml <<_EOS_
