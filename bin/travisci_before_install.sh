@@ -4,13 +4,15 @@
 #REDMINE_VERSION="2.4.0"
 PLUGIN_NAME=redmine_scheduling_poll
 
+# Shelve the plugin files to a temporary directory
+cp -pr . /tmp/${PLUGIN_NAME}
+
 # Get & deploy Redmine
 wget http://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
 tar zxf redmine-${REDMINE_VERSION}.tar.gz
 
-# Clone plugin files to plugin directory
-mkdir redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
-cp $(ls | grep -v redmine-) redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
+# Copy the plugin files to plugin directory
+cp -pr /tmp/${PLUGIN_NAME} redmine-${REDMINE_VERSION}/plugins/${PLUGIN_NAME}
 
 # Create necessary files
 cat > redmine-${REDMINE_VERSION}/config/database.yml <<_EOS_
