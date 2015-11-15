@@ -4,7 +4,10 @@
   <p class="contextual">
     <%= link_to_function 'Toggle Date Picker', 'scheduling_polls_update_date_picker("toggle")' %>
   </p>
-  <%= f.fields_for :scheduling_poll_item do |f_item| %>
+
+  <% items = f.object.scheduling_poll_item
+     items = [items.sorted.select {|v| v.persisted? }, items.select {|v| not v.persisted? }].flatten %>
+  <%= f.fields_for :scheduling_poll_item, items do |f_item| %>
     <%= render :partial => "scheduling_poll_item_form", :locals => { :f => f, :f_item => f_item } %>
   <% end %>
   <% add_item_tmpl = capture do %>

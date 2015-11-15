@@ -2,7 +2,7 @@ api.scheduling_poll do
   api.id @poll.id
   api.issue :id => @poll.issue.id, :name => @poll.issue.subject
   api.created_at @poll.created_at
-  @poll.scheduling_poll_item.each do |item|
+  @poll.scheduling_poll_item.sorted.each do |item|
     api.scheduling_poll_item :id => item.id, :text => item.text do
       item.scheduling_vote.each do |vote|
         api.scheduling_vote do
