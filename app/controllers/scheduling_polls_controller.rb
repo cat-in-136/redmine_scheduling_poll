@@ -15,8 +15,9 @@ class SchedulingPollsController < ApplicationController
 
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
 
-    3.times do
-      @poll.scheduling_poll_item.build
+    3.times do |i|
+      item = @poll.scheduling_poll_item.build
+      item.position = i + 1
     end
     render :edit
   end
@@ -51,13 +52,15 @@ class SchedulingPollsController < ApplicationController
 
   def edit
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
-    1.times do
-      @poll.scheduling_poll_item.build
+    1.times do |i|
+      item = @poll.scheduling_poll_item.build
+      item.position = @poll.scheduling_poll_item.count + i
     end
   end
 
   def update
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
+
     if @poll.update(scheduling_poll_params)
       flash[:notice] = 'Poll updated.'
       redirect_to @poll
@@ -105,7 +108,7 @@ class SchedulingPollsController < ApplicationController
   end
 
   def scheduling_poll_params
-    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:id, :text, :_destroy])
+    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:id, :text, :position, :_destroy])
   end
 
 

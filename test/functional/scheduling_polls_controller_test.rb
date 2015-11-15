@@ -31,10 +31,11 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
     assert poll.destroy
     poll = nil
-    post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_item_attributes => [{:text => "text1"}, {:text => "text2"}, {:text => ""}]}
+    post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_item_attributes => [{:text => "text1", :position => 1}, {:text => "text2", :position => 2}, {:text => "", :position => 3}]}
     poll = SchedulingPoll.find_by(:issue => 1)
     assert_not_nil poll
     assert_equal ["text1", "text2"], poll.scheduling_poll_item.map {|v| v.text }
+    assert_equal [1, 2], poll.scheduling_poll_item.map {|v| v.position }
     assert_redirected_to :action => :show, :id => poll
     assert_not_nil flash[:notice]
   end
@@ -48,9 +49,10 @@ class SchedulingPollsControllerTest < ActionController::TestCase
   test "update" do
     poll = SchedulingPoll.find_by(:issue => 1)
     assert_not_nil poll
-    patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_item_attributes => [{:id => 2, :_destroy => 1}, {:id => 3, :_destroy => 0}, {:text => "text"}, {:text => ""}]}
+    patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_item_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}
     assert_equal "text", SchedulingPollItem.last.text
-    assert_equal [SchedulingPollItem.find(1), SchedulingPollItem.find(3), SchedulingPollItem.last], poll.scheduling_poll_item.to_a
+    assert_raise ActiveRecord::RecordNotFound do SchedulingPollItem.find(2) end
+    assert_equal [SchedulingPollItem.find(1), SchedulingPollItem.find(3), SchedulingPollItem.last], poll.scheduling_poll_item.sorted.to_a
     assert_redirected_to :action => :show, :id => SchedulingPoll.find_by(:issue => Issue.find(1))
     assert_not_nil flash[:notice]
   end

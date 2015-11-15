@@ -2,4 +2,5 @@
   <%= f_item.text_field :text, :readonly => f_item.object.persisted? %>
   <%= f_item.check_box :_destroy %>
   <%= f_item.label :_destroy, "Remove Item" %>
+  <%= f_item.hidden_field :position, :value => f_item.index %>
 </p>
