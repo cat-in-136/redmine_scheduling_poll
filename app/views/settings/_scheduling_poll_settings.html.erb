@@ -1,0 +1,14 @@
+<p>
+<table> 
+<tbody>
+<% 5.step(1, -1) do |item_value| %>
+  <tr>
+    <td>Vote Value #<%= item_value %></td>
+    <td>
+      <%= text_field_tag("settings[scheduling_vote_value_#{item_value}]", @settings["scheduling_vote_value_#{item_value}"])%>
+    </td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+</p>
