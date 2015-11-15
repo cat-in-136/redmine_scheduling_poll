@@ -8,9 +8,9 @@
   <%= f_item.hidden_field :position, :value => f_item.index %>
 </td>
 <td class="reorder">
-  <%= link_to_function image_tag('2uparrow.png',   :alt => l(:label_sort_highest)), "scheduling_poll_move_item_position(-2, #{f_item.index})" %>
-  <%= link_to_function image_tag('1uparrow.png',   :alt => l(:label_sort_higher)),  "scheduling_poll_move_item_position(-1, #{f_item.index})" %>
-  <%= link_to_function image_tag('1downarrow.png', :alt => l(:label_sort_lower)),   "scheduling_poll_move_item_position(+1, #{f_item.index})" %>
-  <%= link_to_function image_tag('2downarrow.png', :alt => l(:label_sort_lowest)),  "scheduling_poll_move_item_position(+2, #{f_item.index})" %>
+  <%= link_to_function image_tag('2uparrow.png',   :alt => l(:label_sort_highest)), "scheduling_poll_move_item_position(-2, #{f_item.index})", :title => l(:label_sort_highest)  %>
+  <%= link_to_function image_tag('1uparrow.png',   :alt => l(:label_sort_higher)),  "scheduling_poll_move_item_position(-1, #{f_item.index})", :title => l(:label_sort_higher)   %>
+  <%= link_to_function image_tag('1downarrow.png', :alt => l(:label_sort_lower)),   "scheduling_poll_move_item_position(+1, #{f_item.index})", :title => l(:label_sort_lower)    %>
+  <%= link_to_function image_tag('2downarrow.png', :alt => l(:label_sort_lowest)),  "scheduling_poll_move_item_position(+2, #{f_item.index})", :title => l(:label_sort_lowest)   %>
 </td>
 </tr>
