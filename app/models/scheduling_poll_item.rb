@@ -10,7 +10,9 @@ class SchedulingPollItem < ActiveRecord::Base
   validates :text, :presence => true, :allow_blank => false
 
   def vote_by_user(user)
-    self.scheduling_vote.where(:user => user).first
+    self.scheduling_vote.find_by(:user => user)
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
   def users
     self.scheduling_vote.map {|v| v.user }
