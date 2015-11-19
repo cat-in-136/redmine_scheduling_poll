@@ -15,11 +15,11 @@ class SchedulingPollTest < ActiveSupport::TestCase
   test "shall reject the scheduling poll items which has empty text" do
     scheduling_poll = SchedulingPoll.new
     scheduling_poll.issue = Issue.first
-    scheduling_poll.scheduling_poll_item.build(:text => '')
+    scheduling_poll.scheduling_poll_items.build(:text => '')
     assert_not scheduling_poll.save
-    scheduling_poll.scheduling_poll_item.build(:text => ' ')
+    scheduling_poll.scheduling_poll_items.build(:text => ' ')
     assert_not scheduling_poll.save
-    scheduling_poll.scheduling_poll_item.build(:text => '\t\r\n')
+    scheduling_poll.scheduling_poll_items.build(:text => '\t\r\n')
     assert_not scheduling_poll.save
   end
 

@@ -10,7 +10,7 @@
 </div>
 <h3><%= @poll.issue.subject %></h3>
 
-<% unless @poll.scheduling_poll_item.empty? %>
+<% unless @poll.scheduling_poll_items.empty? %>
 
 <% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
 <%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
@@ -28,7 +28,7 @@
   </tr>
 </thead>
 <tbody>
-<% @poll.scheduling_poll_item.sorted.each_with_index do |item,i| %>
+<% @poll.scheduling_poll_items.sorted.each_with_index do |item,i| %>
   <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
     <%= content_tag :td, item.text %>
     <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
@@ -59,7 +59,7 @@
 <% end %>
 
 <% end %>
-<% else %><%# if @poll.scheduling_poll_item.empty? %>
+<% else %><%# if @poll.scheduling_poll_items.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
 
@@ -70,7 +70,7 @@
 <table class="list">
   <thead>
     <th></th>
-    <% @poll.scheduling_poll_item.sorted.each do |item| %>
+    <% @poll.scheduling_poll_items.sorted.each do |item| %>
     <th><%= item.text %></th>
     <% end %>
   </thead>
@@ -78,14 +78,14 @@
     <% @poll.users.each_with_index do |user,i| %>
     <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
       <td><%= link_to user.name, user_path(user) %></td>
-      <% @poll.scheduling_poll_item.sorted.each do |item| %>
+      <% @poll.scheduling_poll_items.sorted.each do |item| %>
         <td><%= scheduling_vote_value(item.vote_by_user(user)) %></td>
       <% end %>
     </tr>
     <% end %>
   </tbody>
 </table>
-<% else %><%# if @poll.scheduling_poll_item.empty? %>
+<% else %><%# if @poll.scheduling_poll_items.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
 

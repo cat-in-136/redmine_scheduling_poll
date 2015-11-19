@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-      <% scheduling_poll.scheduling_poll_item.sorted.each_with_index do |item,i| %>
+      <% scheduling_poll.scheduling_poll_items.sorted.each_with_index do |item,i| %>
         <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
           <%= content_tag :td, item.text %>
           <% vote_values.each_pair do |k,v| %>

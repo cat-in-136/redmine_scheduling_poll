@@ -16,7 +16,7 @@ class SchedulingPollsController < ApplicationController
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
 
     3.times do |i|
-      item = @poll.scheduling_poll_item.build
+      item = @poll.scheduling_poll_items.build
       item.position = i + 1
     end
     render :edit
@@ -53,8 +53,8 @@ class SchedulingPollsController < ApplicationController
   def edit
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
     1.times do |i|
-      item = @poll.scheduling_poll_item.build
-      item.position = @poll.scheduling_poll_item.count + i
+      item = @poll.scheduling_poll_items.build
+      item.position = @poll.scheduling_poll_items.count + i
     end
   end
 
@@ -78,7 +78,7 @@ class SchedulingPollsController < ApplicationController
 
   def vote
     user = User.current
-    @poll.scheduling_poll_item.each do |item|
+    @poll.scheduling_poll_items.each do |item|
       item.vote(user, params[:scheduling_vote][item.id.to_s])
     end
     unless params[:vote_comment].empty?
@@ -108,7 +108,7 @@ class SchedulingPollsController < ApplicationController
   end
 
   def scheduling_poll_params
-    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_item_attributes => [:id, :text, :position, :_destroy])
+    params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_items_attributes => [:id, :text, :position, :_destroy])
   end
 
 
