@@ -24,7 +24,7 @@
         <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
           <%= content_tag :td, item.text %>
           <% vote_values.each_pair do |k,v| %>
-            <%= content_tag :td, item.scheduling_vote.where(:value => k).length %>
+            <%= content_tag :td, item.scheduling_votes.where(:value => k).length %>
           <% end %>
         </tr>
       <% end %>

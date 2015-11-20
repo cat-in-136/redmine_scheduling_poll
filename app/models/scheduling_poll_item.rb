@@ -2,7 +2,7 @@ class SchedulingPollItem < ActiveRecord::Base
   unloadable
 
   belongs_to :scheduling_poll
-  has_many :scheduling_vote, :dependent => :destroy
+  has_many :scheduling_votes, :dependent => :destroy
 
   scope :sorted, lambda { order(:position => :asc) }
 
@@ -10,12 +10,12 @@ class SchedulingPollItem < ActiveRecord::Base
   validates :text, :presence => true, :allow_blank => false
 
   def vote_by_user(user)
-    self.scheduling_vote.find_by(:user => user)
+    self.scheduling_votes.find_by(:user => user)
   rescue ActiveRecord::RecordNotFound
     nil
   end
   def users
-    self.scheduling_vote.map {|v| v.user }
+    self.scheduling_votes.map {|v| v.user }
   end
 
   def vote(user, value=0)
@@ -23,7 +23,7 @@ class SchedulingPollItem < ActiveRecord::Base
     v = self.vote_by_user(user)
     unless value == 0
       if v.nil?
-        v = self.scheduling_vote.create(:user => user, :value => value, :create_at => Time.now)
+        v = self.scheduling_votes.create(:user => user, :value => value, :create_at => Time.now)
       else
         v.update(:value => value, :modify_at => Time.now)
       end
