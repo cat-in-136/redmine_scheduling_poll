@@ -11,11 +11,9 @@ class SchedulingPollItem < ActiveRecord::Base
 
   def vote_by_user(user)
     self.scheduling_votes.find_by(:user => user)
-  rescue ActiveRecord::RecordNotFound
-    nil
   end
   def users
-    self.scheduling_votes.map {|v| v.user }
+    self.scheduling_votes.map(&:user)
   end
 
   def vote(user, value=0)

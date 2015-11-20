@@ -11,7 +11,7 @@ class SchedulingPoll < ActiveRecord::Base
     self.scheduling_poll_items.map { |i| i.vote_by_user(user) }.reject { |v| v.nil? }
   end
   def users
-    self.scheduling_poll_items.map { |i| i.users }.flatten.uniq { |u| u.id }
+    self.scheduling_poll_items.map(&:users).flatten.uniq { |u| u.id }
   end
 
   private
