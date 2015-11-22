@@ -2,8 +2,18 @@
 
 Scheduling Poll is a plugin which provides simple polls to scheduling appointments on Redmine.
 
-
 {<img src="https://travis-ci.org/cat-in-136/redmine_scheduling_poll.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/cat-in-136/redmine_scheduling_poll]
+
+== How to install
+
+* Download the plugin to your 'plugins/' directory
+* Run <code>bundle exec rake redmine:plugins:migrate RAILS_ENV=production</code>
+* Restart your redmine
+* Go to Admin/Projects
+* Enable "scheduling poll"
+* Go to Admin/Role
+* Add permission "View scheduling polls" and/or "Vote scheduling polls" to some user
+
 
 == Developing Note
 
