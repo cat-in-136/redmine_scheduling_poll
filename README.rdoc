@@ -17,18 +17,10 @@ Scheduling Poll is a plugin which provides simple polls to scheduling appointmen
 
 == Developing Note
 
-* use pafcioooo/redmine_polls as a reference
+This project is currently under *beta* stage of development.
+
 * belongs to issue (not project)
 * anybody can add alternative date
-
-This project is currently under *alpha* stage of development.
-
-1. Create this plugin as a just only scheduling-appointment app
-2. Integrate this plugin to redmine
-3. Enhance UX
-4. *Never* take consideration of DB-schema compatibility till release *0.1.0*.
-   * i.e. after you update (`git pull`) this plugin, you may have to execute as follows:
-       % bundle exec rake redmine:plugins:migrate NAME=redmine_scheduling_poll VERSION=0
-       % bundle exec rake redmine:plugins:migrate
- 
+* l10n is not implemented
+* seems *not* to be compatible with redmine 3.2.0 (and responsible layout)
 
