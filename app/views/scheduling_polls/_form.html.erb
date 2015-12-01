@@ -19,8 +19,10 @@
   <% end %>
   </tbody>
   <tfoot>
+  <tr>
   <td colspan="3">
     <%= link_to_function 'Add item', "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
+  </tr>
   </td>
   </tfoot>
   <table>
