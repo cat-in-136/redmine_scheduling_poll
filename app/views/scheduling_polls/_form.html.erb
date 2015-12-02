@@ -69,7 +69,7 @@ function scheduling_poll_move_item_position(cmd, index) {
 function scheduling_polls_add_item(template) {
   "use strict";
 
-  var child_index = $("#scheduling_poll_add_item_link").parents("form").find("input.scheduling_poll_items_text").length;
+  var child_index = $("#scheduling_poll_add_item_link").parents("form").find(".scheduling_poll_item_text").length;
   $("#scheduling_poll_add_item_link").parents("table").find("tbody").append(template.replace(/CHILD_INDEX/g, child_index));
   scheduling_polls_update_date_picker();
 }
