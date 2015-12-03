@@ -20,6 +20,10 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :new, :issue => 1
     assert_response :success
     assert_template :edit
+
+    assert_not_nil assigns(:poll)
+    assert_equal 0, assigns(:poll).scheduling_poll_items.count # no item in DB.
+    assert_equal 3, assigns(:poll).scheduling_poll_items.length # one more item
   end
 
   test "create" do
@@ -44,6 +48,10 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :edit, :id => 1
     assert_response :success
     assert_template :edit
+
+    assert_not_nil assigns(:poll)
+    assert_equal 3, assigns(:poll).scheduling_poll_items.count # 3 items in DB.
+    assert_equal 4, assigns(:poll).scheduling_poll_items.length # one more item
   end
 
   test "update" do
