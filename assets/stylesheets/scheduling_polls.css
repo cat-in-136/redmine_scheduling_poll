@@ -1,3 +1,13 @@
+.scheduling-voting-result tfoot tr {
+    background-color: #EEE;
+}
+.scheduling-voting-result tfoot tr.even {
+    background-color: #F6F7F8;
+}
+.scheduling-voting-result tfoot tr:hover {
+    background-color: #FFD;
+}
+
 @media all and (max-width: 899px) {
     .scheduling-poll-vote-result-side-col {
         display: none;

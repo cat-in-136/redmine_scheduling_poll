@@ -74,7 +74,7 @@
 <h3>Voting Result</h3>
 <% unless @poll.users.empty? %>
 <div class="autoscroll">
-<table class="list">
+<table class="list scheduling-voting-result">
   <thead>
     <th></th>
     <% @poll.scheduling_poll_items.sorted.each do |item| %>
@@ -91,6 +91,16 @@
     </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <% vote_values.keys.each_with_index do |k,i| %>
+    <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
+      <td><%=h vote_values[k] %></td>
+      <% @poll.scheduling_poll_items.sorted.each do |item| %>
+      <%= content_tag :td, item.scheduling_votes.where(:value => k).length %>
+      <% end %>
+    </tr>
+    <% end %>
+  </tfoot>
 </table>
 </div>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
