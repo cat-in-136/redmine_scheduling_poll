@@ -1,3 +1,6 @@
+<%= content_for :header_tags do %>
+  <%= stylesheet_link_tag 'scheduling_polls.css', :plugin => 'redmine_scheduling_poll' %>
+<% end %>
 <%= content_for :sidebar do %>
   <%= render_date_related_parameter_of_issue(@poll.issue) %>
 <% end %>
@@ -24,7 +27,7 @@
       <%= content_tag :th, User.current.name %>
     <% end %>
     <% vote_values.each_pair do |k,v| %>
-      <%= content_tag :th, v %>
+      <%= content_tag :th, v, :class => "scheduling-poll-vote-result-side-col" %>
     <% end %>
   </tr>
 </thead>
@@ -36,13 +39,15 @@
       <td>
         <% current_vote_value = scheduling_vote_value(item.vote_by_user(User.current)) %>
         <% vote_values.merge(0 => scheduling_vote_value(0)).each_pair do |k,v| %>
-          <%= radio_button :scheduling_vote, item.id, k, :checked => (v == current_vote_value) %>
-          <%= label :scheduling_vote, item.id, v, :value => k %>
+          <label class="scheduling-poll-vote-radiobutton">
+            <%= radio_button :scheduling_vote, item.id, k, :checked => (v == current_vote_value) %>
+            <%=h v %>
+          </label>
         <% end %>
       </td>
     <% end %>
     <% vote_values.each_pair do |k,v| %>
-      <%= content_tag :td, item.scheduling_votes.where(:value => k).length %>
+      <%= content_tag :td, item.scheduling_votes.where(:value => k).length, :class => "scheduling-poll-vote-result-side-col" %>
     <% end %>
   </tr>
 <% end %>

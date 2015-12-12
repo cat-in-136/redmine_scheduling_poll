@@ -1,0 +1,11 @@
+@media all and (max-width: 899px) {
+    .scheduling-poll-vote-result-side-col {
+        display: none;
+    }
+}
+
+@media all and (max-width: 399px) {
+    .scheduling-poll-vote-radiobutton {
+        display: block;
+    }
+}
