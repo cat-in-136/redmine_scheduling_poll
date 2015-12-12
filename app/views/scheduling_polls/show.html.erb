@@ -15,6 +15,7 @@
 <% vote_values = Hash[*scheduling_vote_values_array.flatten] %>
 <%= form_tag(url_for(:controller => "scheduling_polls", :id => @poll.id, :action => "vote")) do %>
 
+<div class="autoscroll">
 <table class="list">
 <thead>
   <tr>
@@ -47,6 +48,7 @@
 <% end %>
 </tbody>
 </table>
+</div>
 <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <div>
   <%= link_to_function "Add a comment", '$("#vote_comment").show();$(this).hide()', :class => 'icon icon-comment' %>
@@ -66,6 +68,7 @@
 
 <h3>Voting Result</h3>
 <% unless @poll.users.empty? %>
+<div class="autoscroll">
 <table class="list">
   <thead>
     <th></th>
@@ -84,6 +87,7 @@
     <% end %>
   </tbody>
 </table>
+</div>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
