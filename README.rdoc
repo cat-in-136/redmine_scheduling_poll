@@ -22,5 +22,3 @@ This project is currently under *beta* stage of development.
 * belongs to issue (not project)
 * anybody can add alternative date
 * l10n is not implemented
-* seems *not* to be compatible with redmine 3.2.0 (and responsible layout)
-
