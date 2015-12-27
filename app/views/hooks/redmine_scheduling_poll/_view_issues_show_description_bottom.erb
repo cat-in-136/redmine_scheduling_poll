@@ -6,9 +6,9 @@
 <% if scheduling_poll %>
 <% vote_values = Hash[*SchedulingPollsController.helpers.scheduling_vote_values_array.flatten] %>
   <div class="contextual">
-    <%= link_to 'Vote', scheduling_poll_path(scheduling_poll) %>
+    <%= link_to l(:label_vote_on_scheduling_poll), scheduling_poll_path(scheduling_poll) %>
   </div>
-  <p><strong>Scheduling Poll</strong></p>
+  <p><strong><%=h l :label_scheduling_poll %></strong></p>
   <div class="autoscroll">
     <table class="list">
       <thead>
@@ -33,12 +33,12 @@
   </div>
 <% else # unless scheduling_poll %>
   <div class="contextual">
-    <%= link_to 'Add', scheduling_polls_new_path(:issue => @issue) %>
+    <%= link_to l(:label_new), scheduling_polls_new_path(:issue => @issue) %>
   </div>
-  <p><strong>Scheduling Poll</strong></p>
+  <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>
 <% else %><%# unless User.current.allowed_to?(:view_schduling_polls, @project) %>
-  <p><strong>Scheduling Poll</strong></p>
+  <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>
 </div>
 

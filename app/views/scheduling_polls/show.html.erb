@@ -5,11 +5,11 @@
   <%= render_date_related_parameter_of_issue(@poll.issue) %>
 <% end %>
 
-<h2>Vote</h2>
+<h2><%=h l :label_scheduling_poll %></h2>
 
 <div id="scheduling-poll" class="box">
 <div class="contextual">
-  <%= link_to 'Edit poll items', scheduling_poll_edit_path(@poll), :class => 'icon icon-edit' %>
+  <%= link_to l(:label_edit_scheduling_poll_items), scheduling_poll_edit_path(@poll), :class => 'icon icon-edit' %>
 </div>
 <h3><%= @poll.issue.subject %></h3>
 
@@ -56,11 +56,11 @@
 </div>
 <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <div>
-  <%= link_to_function "Add a comment", '$("#vote_comment").show();$(this).hide()', :class => 'icon icon-comment' %>
+  <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment").show();$(this).hide()', :class => 'icon icon-comment' %>
   <%= text_area_tag :vote_comment, '', :style => 'display: none; width: 100%' %>
 </div>
 <div>
-  <%= submit_tag "Vote" %>
+  <%= submit_tag l(:label_vote_on_scheduling_poll) %>
 </div>
 <% end %>
 
@@ -71,7 +71,7 @@
 
 </div>
 
-<h3>Voting Result</h3>
+<h3><%=h l(:label_scheduling_poll_voting_result) %></h3>
 <% unless @poll.users.empty? %>
 <div class="autoscroll">
 <table class="list scheduling-voting-result">

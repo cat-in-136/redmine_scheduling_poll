@@ -1,3 +1,16 @@
-# English strings go here for Rails i18n
 en:
-  # my_label: "My label"
+  project_module_scheduling_polls: Scheduling Polls
+  permission_view_schduling_polls: View scheduling polls
+  permission_vote_schduling_polls: Vote on scheduling polls
+  label_scheduling_poll: Scheduling poll
+  label_edit_scheduling_poll_items: Edit poll items
+  label_add_comment_with_scheduling_poll_vote: Add a comment
+  label_vote_on_scheduling_poll: Vote
+  label_scheduling_poll_voting_result: Voting Result
+  label_toggle_date_picker_on_scheduling_poll_items: Toggle date picker
+  label_remove_scheduling_poll_item: Remove item
+  label_add_scheduling_poll_item: Add item
+  label_update_scheduling_poll_items: Update
+  notice_successful_scheduling_vote: Successful vote.
+  notice_scheduling_poll_successful_create: "%{link_to_poll} created for the issue."
+

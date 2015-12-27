@@ -2,7 +2,7 @@
   <%= render_date_related_parameter_of_issue(@poll.issue) %>
 <% end %>
 
-<h2>Edit poll items</h2>
+<h2><%=h l :label_edit_scheduling_poll_items %></h2>
 <div id="scheduling-poll" class="box">
   <% action = (@poll.persisted?)? "update" : "create" %>
   <%= form_for @poll, :url => url_for(:controller => "scheduling_polls", :action => action) do |f| %>

@@ -2,7 +2,7 @@
 
 <div>
   <p class="contextual">
-    <%= link_to_function 'Toggle Date Picker', 'scheduling_polls_update_date_picker("toggle")' %>
+    <%= link_to_function l(:label_toggle_date_picker_on_scheduling_poll_items), 'scheduling_polls_update_date_picker("toggle")' %>
   </p>
 
   <table>
@@ -21,7 +21,7 @@
   <tfoot>
   <tr>
   <td colspan="3">
-    <%= link_to_function 'Add item', "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
+    <%= link_to_function l(:label_add_scheduling_poll_item), "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
   </td>
   </tr>
   </tfoot>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="actions">
-  <%= f.submit %>
+  <%= f.submit l(:label_update_scheduling_poll_items) %>
 </div>
 
 <%= javascript_tag <<EOD
