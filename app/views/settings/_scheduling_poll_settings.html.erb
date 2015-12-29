@@ -1,9 +1,11 @@
-<p>
 <% 5.step(1, -1) do |item_value| %>
+<p>
   <%= label_tag("settings[scheduling_vote_value_#{item_value}]", l(:label_settings_scheduling_vote_value, :num => item_value)) %>
   <%= text_field_tag("settings[scheduling_vote_value_#{item_value}]", @settings["scheduling_vote_value_#{item_value}"], :placeholder => l(:label_disabled))%>
-  <br />
+</p>
 <% end %>
+<hr />
+<p>
   <%= label_tag("settings[scheduling_poll_item_date_format]", l(:label_settings_scheduling_poll_item_date_format)) %>
   <%= text_field_tag("settings[scheduling_poll_item_date_format]", @settings["scheduling_poll_item_date_format"])%>
 </p>
