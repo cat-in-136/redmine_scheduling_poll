@@ -21,5 +21,6 @@ Redmine::Plugin.register :redmine_scheduling_poll do
     'scheduling_vote_value_3' => 'OK',
     'scheduling_vote_value_2' => 'maybe',
     'scheduling_vote_value_1' => 'NG',
+    'scheduling_poll_item_date_format' => 'yy-mm-dd',
   }, :partial => 'settings/scheduling_poll_settings'
 end

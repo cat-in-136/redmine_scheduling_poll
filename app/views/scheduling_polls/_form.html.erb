@@ -42,7 +42,8 @@ function scheduling_polls_update_date_picker(enable) {
   }
   if (enable) {
     $("form .scheduling_poll_item_text:not([disabled]):not([readonly])").datepicker({
-      dateFormat: 'yy-mm-dd', showOn: 'button', buttonImageOnly: true,
+      dateFormat: '#{Setting.plugin_redmine_scheduling_poll["scheduling_poll_item_date_format"]}',
+      showOn: 'button', buttonImageOnly: true,
       buttonImage: '#{path_to_image('/images/calendar.png')}',
       showButtonPanel: true, showWeek: true, showOtherMonths: true,
       selectOtherMonths: true, changeMonth: true, changeYear: true

@@ -14,4 +14,4 @@ en:
   notice_successful_scheduling_vote: Successful vote.
   notice_scheduling_poll_successful_create: "%{link_to_poll} created for the issue."
   label_settings_scheduling_vote_value: "Vote Value #%{num}"
-
+  label_settings_scheduling_poll_item_date_format: Date format in item

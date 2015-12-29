@@ -4,4 +4,6 @@
   <%= text_field_tag("settings[scheduling_vote_value_#{item_value}]", @settings["scheduling_vote_value_#{item_value}"], :placeholder => l(:label_disabled))%>
   <br />
 <% end %>
+  <%= label_tag("settings[scheduling_poll_item_date_format]", l(:label_settings_scheduling_poll_item_date_format)) %>
+  <%= text_field_tag("settings[scheduling_poll_item_date_format]", @settings["scheduling_poll_item_date_format"])%>
 </p>
