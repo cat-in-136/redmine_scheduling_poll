@@ -32,12 +32,12 @@ class SchedulingPollsController < ApplicationController
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
 
     if @poll.save
-      journal = @poll.issue.init_journal(User.current, "{{scheduling_poll(#{@poll.id})}} created for the issue.")
+      journal = @poll.issue.init_journal(User.current, l(:notice_scheduling_poll_successful_create, :link_to_poll => "{{scheduling_poll(#{@poll.id})}}"))
       @poll.issue.save
 
       respond_to do |format|
         format.html {
-          flash[:notice] = 'Poll created.'
+          flash[:notice] = l(:notice_successful_create)
           redirect_to @poll
         }
         format.api { render_api_ok }
@@ -62,7 +62,7 @@ class SchedulingPollsController < ApplicationController
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
 
     if @poll.update(scheduling_poll_params)
-      flash[:notice] = 'Poll updated.'
+      flash[:notice] = l(:notice_successful_update)
       redirect_to @poll
     else
       render :edit
@@ -88,7 +88,7 @@ class SchedulingPollsController < ApplicationController
 
     respond_to do |format|
       format.html {
-        flash[:notice] = 'Vote saved.'
+        flash[:notice] = l(:notice_successful_scheduling_vote)
         redirect_to :action => 'show'
       }
       format.api { render_api_ok }

@@ -1,14 +1,11 @@
-<p>
-<table> 
-<tbody>
 <% 5.step(1, -1) do |item_value| %>
-  <tr>
-    <td>Vote Value #<%= item_value %></td>
-    <td>
-      <%= text_field_tag("settings[scheduling_vote_value_#{item_value}]", @settings["scheduling_vote_value_#{item_value}"])%>
-    </td>
-  </tr>
+<p>
+  <%= label_tag("settings[scheduling_vote_value_#{item_value}]", l(:label_settings_scheduling_vote_value, :num => item_value)) %>
+  <%= text_field_tag("settings[scheduling_vote_value_#{item_value}]", @settings["scheduling_vote_value_#{item_value}"], :placeholder => l(:label_disabled))%>
+</p>
 <% end %>
-</tbody>
-</table>
+<hr />
+<p>
+  <%= label_tag("settings[scheduling_poll_item_date_format]", l(:label_settings_scheduling_poll_item_date_format)) %>
+  <%= text_field_tag("settings[scheduling_poll_item_date_format]", @settings["scheduling_poll_item_date_format"])%>
 </p>
