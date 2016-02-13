@@ -20,3 +20,5 @@ bundle exec rake redmine:load_default_data
 cp -r plugins/${PLUGIN_NAME}/test/fixtures/*.* test/fixtures
 bundle exec rake redmine:plugins NAME=${PLUGIN_NAME}
 
+# Start phantomjs
+phantomjs --webdriver 0.0.0.0:4444 >> phantomjs.log &

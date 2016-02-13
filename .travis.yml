@@ -18,3 +18,4 @@ matrix:
 before_install: bash -x bin/travisci_before_install.sh
 before_script: bash -x bin/travisci_before_script.sh
 script: bash -x bin/travisci_exec_test.sh
+after_script: bash -x  bin/travisci_after_script.sh
