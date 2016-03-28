@@ -99,6 +99,8 @@ class SchedulingPollsController < ApplicationController
   def set_scheduling_poll
     @poll = SchedulingPoll.find(params[:id])
     @project = @poll.issue.project
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
   def ensure_allowed_to_view_scheduling_polls
     raise ::Unauthorized unless User.current.allowed_to?(:view_schduling_polls, @project, :global => true)

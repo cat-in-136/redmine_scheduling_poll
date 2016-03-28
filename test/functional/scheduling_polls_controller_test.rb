@@ -69,5 +69,8 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :show, :id => 1
     assert_response :success
     assert_template :show
+
+    get :show, :id => 9999 # not-exist issue
+    assert_response 404
   end
 end
