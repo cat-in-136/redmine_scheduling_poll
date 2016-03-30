@@ -104,6 +104,7 @@ class SchedulingPollsController < ApplicationController
   end
   def ensure_allowed_to_view_scheduling_polls
     raise ::Unauthorized unless User.current.allowed_to?(:view_schduling_polls, @project, :global => true)
+    raise ::Unauthorized unless @poll.issue.visible?(User.current)
   end
   def ensure_allowed_to_vote_scheduling_polls
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)

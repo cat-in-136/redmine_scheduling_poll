@@ -8,8 +8,24 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     User.current = User.find(2)
     @request.session[:user_id] = User.current.id
     Project.find(1).enable_module! :scheduling_polls
-    Role.find(4).add_permission! :view_schduling_polls
-    Role.find(4).add_permission! :vote_schduling_polls
+    role = Role.find(4)
+    role.add_permission! :view_schduling_polls
+    role.add_permission! :vote_schduling_polls
+
+    # FIXME Monkey patching to pass issue#visibule?
+    Issue.module_eval do
+      def visible_with_scheduling_poll_test?(usr=nil)
+        !self.is_private? || (self.author == (usr || User.current))
+      end
+      alias_method_chain :visible?, :scheduling_poll_test
+    end
+  end
+
+  def teardown
+    # Monkey un-patching of "visible_with_scheduling_poll_test?"
+    Issue.module_eval do
+      alias_method :visible?, :visible_without_scheduling_poll_test?
+    end
   end
 
   test "new" do
