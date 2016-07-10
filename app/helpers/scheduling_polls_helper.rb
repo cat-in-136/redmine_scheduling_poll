@@ -31,11 +31,14 @@ module SchedulingPollsHelper
       s << '<p><strong>' << h(l(:field_due_date)) << '</strong></p>'
       s << content_tag(:span, format_date(issue.due_date), :class => 'due-date')
     end
-    # show date-related custom field values
-    issue.visible_custom_field_values.each do |value|
-      if value.custom_field.field_format == "date"
-        s << '<p><strong>' << h(CustomFieldsController.helpers.custom_field_name_tag(value.custom_field)) << '</strong></p>'
-        s << content_tag(:span, CustomFieldsController.helpers.show_value(value))
+    # show date-related custom field values (requires redmine >= 3.1)
+    # if Gem::Version.new([Redmine::VERSION::MAJOR, Redmine::VERSION::MINOR].join(".")) >= Gem::Version.new("3.1") # redmine >= 3.1
+    if CustomFieldsController.helpers.methods.include?(:custom_field_name_tag)
+      issue.visible_custom_field_values.each do |value|
+        if value.custom_field.field_format == "date"
+          s << '<p><strong>' << h(CustomFieldsController.helpers.custom_field_name_tag(value.custom_field)) << '</strong></p>'
+          s << content_tag(:span, CustomFieldsController.helpers.show_value(value))
+        end
       end
     end
     s << '</div>'
