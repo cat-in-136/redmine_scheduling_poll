@@ -1,0 +1,18 @@
+# French strings go here for Rails i18n - Mickael Gaillard 08/07/2016
+fr:
+  project_module_scheduling_polls: Sondage
+  permission_view_schduling_polls: Visualiser les sondages
+  permission_vote_schduling_polls: Voter aux sondages
+  label_scheduling_poll: Sondage
+  label_edit_scheduling_poll_items: Edition des choix du sondage
+  label_add_comment_with_scheduling_poll_vote: Ajouter un commentaire
+  label_vote_on_scheduling_poll: Voter
+  label_scheduling_poll_voting_result: Résultat du sondage
+  label_toggle_date_picker_on_scheduling_poll_items: Basculer en mode selecteur de date
+  label_remove_scheduling_poll_item: Supprimer un choix
+  label_add_scheduling_poll_item: Ajouter un choix
+  label_update_scheduling_poll_items: Mettre a jour
+  notice_successful_scheduling_vote: Vote validé.
+  notice_scheduling_poll_successful_create: "%{link_to_poll} créé pour cette demande."
+  label_settings_scheduling_vote_value: "Réponse #%{num}"
+  label_settings_scheduling_poll_item_date_format: Format de la date dans le choix
