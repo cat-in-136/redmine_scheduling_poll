@@ -2,7 +2,8 @@ class SchedulingPollsController < ApplicationController
   unloadable
 
   before_action :set_scheduling_poll, :only => [:edit, :update, :show, :vote]
-  before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show]
+  before_action :set_scheduling_poll_by_issue_id, :only => [:show_by_issue]
+  before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show, :show_by_issue]
   before_action :ensure_allowed_to_vote_scheduling_polls, :only => [:edit, :update, :vote]
 
   def new
@@ -75,6 +76,11 @@ class SchedulingPollsController < ApplicationController
       format.api
     end
   end
+  
+  def show_by_issue
+    #redirect_to @poll, :format => "xml"
+    redirect_to :action => :show, :id => @poll.id, :format => params[:format]
+  end
 
   def vote
     user = User.current
@@ -98,6 +104,13 @@ class SchedulingPollsController < ApplicationController
   private
   def set_scheduling_poll
     @poll = SchedulingPoll.find(params[:id])
+    @project = @poll.issue.project
+  rescue ActiveRecord::RecordNotFound
+    render_404
+  end
+  def set_scheduling_poll_by_issue_id
+    @poll = SchedulingPoll.find_by(:issue_id => params[:issue_id])
+    raise ActiveRecord::RecordNotFound if @poll.nil?
     @project = @poll.issue.project
   rescue ActiveRecord::RecordNotFound
     render_404
