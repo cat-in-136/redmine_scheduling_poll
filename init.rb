@@ -11,7 +11,7 @@ Redmine::Plugin.register :redmine_scheduling_poll do
   author_url 'https://github.com/cat-in-136/'
 
   project_module :scheduling_polls do
-    permission :view_schduling_polls, :polls => [:show]
+    permission :view_schduling_polls, :polls => [:show, :show_by_issue]
     permission :vote_schduling_polls, :polls => [:new, :create, :edit, :update, :vote]
   end
 
