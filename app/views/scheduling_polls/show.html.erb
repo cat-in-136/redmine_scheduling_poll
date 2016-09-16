@@ -86,7 +86,12 @@
     <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
       <td><%= link_to user.name, user_path(user) %></td>
       <% @poll.scheduling_poll_items.sorted.each do |item| %>
-        <td><%= scheduling_vote_value(item.vote_by_user(user)) %></td>
+        <% vote = item.vote_by_user(user) %>
+        <% if vote %>
+          <%= content_tag :td, scheduling_vote_value(vote), :title => format_time(vote.modify_at || vote.create_at) %>
+        <% else %>
+          <%= content_tag :td %>
+        <% end %>
       <% end %>
     </tr>
     <% end %>
