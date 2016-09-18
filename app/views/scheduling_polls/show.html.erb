@@ -108,6 +108,16 @@
   </tfoot>
 </table>
 </div>
+<ul>
+<% @poll.users.each do |user| %>
+  <% vote = @poll.votes_by_user(user).max_by { |v| (v.modify_at.nil?)? v.create_at : v.modify_at } %>
+  <% if vote.modify_at.nil? %>
+  <li><%= authoring vote.create_at, user, :label => :label_updated_time_by %></li>
+  <% else %>
+  <li><%= authoring vote.modify_at, user, :label => :label_updated_time_by %></li>
+  <% end %>
+<% end %>
+</ul>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
