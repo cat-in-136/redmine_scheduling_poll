@@ -13,7 +13,7 @@ class SchedulingPollItem < ActiveRecord::Base
     self.scheduling_votes.find_by(:user => user)
   end
   def users
-    self.scheduling_votes.map(&:user)
+    User.where(:id => self.scheduling_votes.pluck(:user_id))
   end
 
   def vote(user, value=0)
