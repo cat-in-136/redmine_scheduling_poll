@@ -109,13 +109,10 @@
 </table>
 </div>
 <ul>
-<% @poll.users.each do |user| %>
-  <% vote = @poll.votes_by_user(user).max_by { |v| (v.modify_at.nil?)? v.create_at : v.modify_at } %>
-  <% if vote.modify_at.nil? %>
-  <li><%= authoring vote.create_at, user, :label => :label_updated_time_by %></li>
-  <% else %>
-  <li><%= authoring vote.modify_at, user, :label => :label_updated_time_by %></li>
-  <% end %>
+<% datetime = Arel::Nodes::NamedFunction.new('COALESCE', [SchedulingVote.arel_table[:modify_at], SchedulingVote.arel_table[:create_at]]) %>
+<% @poll.votes.group(:user).maximum(datetime.to_sql).sort_by { |k,v| v }.each do |v| %>
+  <% user, datetime = v %>
+  <li><%= authoring datetime, user, :label => :label_updated_time_by %></li>
 <% end %>
 </ul>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
