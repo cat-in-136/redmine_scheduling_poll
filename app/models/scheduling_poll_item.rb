@@ -12,6 +12,10 @@ class SchedulingPollItem < ActiveRecord::Base
   def vote_by_user(user)
     self.scheduling_votes.find_by(:user => user)
   end
+  def vote_value_by_user(user)
+    v = self.vote_by_user(user)
+    (v.nil?)? 0 : v.value
+  end
   def users
     User.where(:id => self.scheduling_votes.pluck(:user_id))
   end

@@ -89,4 +89,28 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :show, :id => 9999 # not-exist issue
     assert_response 404
   end
+
+  test "vote" do
+    assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+    assert_equal nil, SchedulingPollItem.find(5).vote_by_user(User.current)
+    assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
+
+    post :vote, :id => 2, :scheduling_vote => { '4' => '0', '5' => '1', '6' => '2' }, :vote_comment => ''
+    assert_redirected_to :action => :show, :id => 2
+    assert_not_nil flash[:notice]
+    assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+    assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+    assert_equal 2, SchedulingPollItem.find(6).vote_value_by_user(User.current)
+
+    post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '**vote test msg**'
+    assert_redirected_to :action => :show, :id => 2
+    assert_not_nil flash[:notice]
+    assert_equal 2, SchedulingPollItem.find(4).vote_value_by_user(User.current)
+    assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+    assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
+    # Journal does not work in the test (i.e. empty)
+
+    post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '' # no-change
+    assert_response 500
+  end
 end
