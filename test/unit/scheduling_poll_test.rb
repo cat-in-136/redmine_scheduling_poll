@@ -23,6 +23,17 @@ class SchedulingPollTest < ActiveSupport::TestCase
     assert_not scheduling_poll.save
   end
 
+  test "votes shall return all the votes" do
+    scheduling_poll = SchedulingPoll.find(1)
+
+    vote_id = SchedulingVote.arel_table[:id]
+    votes = SchedulingVote.where(vote_id.eq(1).or(vote_id.eq(2).or(vote_id.eq(3).or(vote_id.eq(4).or(vote_id.eq(5).or(vote_id.eq(6).or(vote_id.eq(7))))))))
+    assert_equal votes.sort, scheduling_poll.votes.sort
+
+    scheduling_poll = SchedulingPoll.find(2)
+    assert_empty scheduling_poll.votes
+  end
+
   test "votes_by_user shall return all the votes which the user votes" do
     scheduling_poll = SchedulingPoll.find(1)
 
@@ -30,11 +41,13 @@ class SchedulingPollTest < ActiveSupport::TestCase
     vote_id = SchedulingVote.arel_table[:id]
     votes = SchedulingVote.where(vote_id.eq(1).or(vote_id.eq(2).or(vote_id.eq(3))))
     assert_equal votes.sort, scheduling_poll.votes_by_user(user).sort
-  end
 
-  test "votes_by_user shall return empty for user who does not vote" do
     scheduling_poll = SchedulingPoll.find(1)
     user = User.find(5)
+    assert_empty scheduling_poll.votes_by_user(user)
+
+    scheduling_poll = SchedulingPoll.find(2)
+    user = User.find(1)
     assert_empty scheduling_poll.votes_by_user(user)
   end
 
@@ -43,5 +56,8 @@ class SchedulingPollTest < ActiveSupport::TestCase
     user_id = User.arel_table[:id]
     users = User.where(user_id.eq(1).or(user_id.eq(2).or(user_id.eq(3))))
     assert_equal users.sort, scheduling_poll.users.sort
+
+    scheduling_poll = SchedulingPoll.find(2)
+    assert_empty scheduling_poll.users.sort
   end
 end

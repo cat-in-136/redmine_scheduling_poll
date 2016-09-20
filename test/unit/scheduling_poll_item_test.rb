@@ -52,6 +52,18 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
     assert_equal SchedulingVote.find(7), scheduling_poll_item.vote_by_user(user)
   end
 
+  test "vote_value_by_user shall return the vote value which the user votes" do
+    scheduling_poll_item = SchedulingPollItem.find(1)
+    user = User.find(1)
+    assert_equal SchedulingVote.find(1).value, scheduling_poll_item.vote_value_by_user(user)
+
+    user = User.find(3)
+    assert_equal SchedulingVote.find(7).value, scheduling_poll_item.vote_value_by_user(user)
+
+    user = User.find(5)
+    assert_equal 0, scheduling_poll_item.vote_value_by_user(user)
+  end
+
   test "users shall return all the users who vote the item" do
     user_id = User.arel_table[:id]
 

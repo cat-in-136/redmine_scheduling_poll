@@ -15,3 +15,4 @@ ja:
   notice_scheduling_poll_successful_create: "%{link_to_poll} がこのチケットに対して作成されました。"
   label_settings_scheduling_vote_value: "回答値 #%{num}"
   label_settings_scheduling_poll_item_date_format: 項目における日付形式
+  error_scheduling_vote_no_change: 回答に変更がありません

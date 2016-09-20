@@ -7,11 +7,14 @@ class SchedulingPoll < ActiveRecord::Base
 
   validates :issue, :presence => true
 
+  def votes
+    SchedulingVote.where(:scheduling_poll_item => self.scheduling_poll_items)
+  end
   def votes_by_user(user)
-    self.scheduling_poll_items.map { |i| i.vote_by_user(user) }.reject { |v| v.nil? }
+    self.votes.where(:user => user)
   end
   def users
-    self.scheduling_poll_items.map(&:users).flatten.uniq { |u| u.id }
+    User.where(:id => self.votes.pluck(:user_id))
   end
 
   private
