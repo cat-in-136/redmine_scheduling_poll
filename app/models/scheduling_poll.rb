@@ -4,17 +4,13 @@ class SchedulingPoll < ActiveRecord::Base
   belongs_to :issue
   has_many :scheduling_poll_items, :dependent => :destroy
   accepts_nested_attributes_for :scheduling_poll_items, :reject_if => :reject_scheduling_poll_items, :allow_destroy => true
+  has_many :votes, :through => :scheduling_poll_items, :source => :scheduling_votes
+  has_many :users, lambda { order(:id).distinct }, :through => :scheduling_poll_items
 
   validates :issue, :presence => true
 
-  def votes
-    SchedulingVote.where(:scheduling_poll_item => self.scheduling_poll_items)
-  end
   def votes_by_user(user)
     self.votes.where(:user => user)
-  end
-  def users
-    User.where(:id => self.votes.pluck(:user_id))
   end
 
   private
