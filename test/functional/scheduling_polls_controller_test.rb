@@ -113,4 +113,12 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '' # no-change
     assert_response 500
   end
+
+  test "show_by_issue" do
+    get :show_by_issue, :issue_id => 1
+    assert_redirected_to :action => :show, :id => 1
+
+    get :show_by_issue, :issue_id => 9999 # not-exist issue
+    assert_response 404
+  end
 end
