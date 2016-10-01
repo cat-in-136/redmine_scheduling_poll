@@ -60,6 +60,46 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_not_nil flash[:notice]
   end
 
+  test "create.api" do
+    with_settings :rest_api_enabled => '1' do
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :json, :key => User.current.api_key
+      assert_response :success
+      json = ActiveSupport::JSON.decode(response.body)
+      assert_equal 'exist', json['status']
+      assert_equal poll.id, json['poll']['id']
+
+      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_equal 'application/xml', response.content_type
+      assert_match /exist/, response.body
+
+      assert poll.destroy
+      poll = nil
+      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:text => "text1", :position => 1}, {:text => "text2", :position => 2}, {:text => "", :position => 3}]}, :format => :json, :key => User.current.api_key
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      assert_equal ["text1", "text2"], poll.scheduling_poll_items.map {|v| v.text }
+      assert_equal [1, 2], poll.scheduling_poll_items.map {|v| v.position }
+      assert_response :success
+      json = ActiveSupport::JSON.decode(response.body)
+      assert_equal 'ok', json['status']
+      assert_equal poll.id, json['poll']['id']
+
+      assert poll.destroy
+      poll = nil
+      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:text => "text1", :position => 1}, {:text => "text2", :position => 2}, {:text => "", :position => 3}]}, :format => :xml, :key => User.current.api_key
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      assert_equal ["text1", "text2"], poll.scheduling_poll_items.map {|v| v.text }
+      assert_equal [1, 2], poll.scheduling_poll_items.map {|v| v.position }
+      assert_response :success
+      assert_equal 'application/xml', response.content_type
+      assert_match /ok/, response.body
+    end
+  end
+
   test "edit" do
     get :edit, :id => 1
     assert_response :success

@@ -27,7 +27,13 @@ class SchedulingPollsController < ApplicationController
 
   def create
     @poll = SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
-    return redirect_to @poll if @poll
+    if @poll
+      respond_to do |format|
+        format.html { return redirect_to @poll }
+        format.xml { return render :xml => "<scheduling_poll><status>exist</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
+        format.json { return render :json => {:status => :exist, :poll => { :id => @poll.id } } }
+      end
+    end
     @poll = SchedulingPoll.new(scheduling_poll_params)
     ensure_allowed_to_vote_scheduling_polls
     @project = @poll.issue.project
@@ -43,7 +49,8 @@ class SchedulingPollsController < ApplicationController
           flash[:notice] = l(:notice_successful_create)
           redirect_to @poll
         }
-        format.api { render_api_ok }
+        format.xml { render :text => "<scheduling_poll><status>ok</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
+        format.json { render :json => { :status => :ok, :text => l(:notice_successful_create), :poll => { :id => @poll.id } } }
       end
     else
       respond_to do |format|
