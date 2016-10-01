@@ -90,6 +90,20 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_response 404
   end
 
+  test "show.api" do
+    with_settings :rest_api_enabled => '1' do
+      get :show, :id => 1, :format => :json, :key => User.current.api_key
+      assert_response :success
+      json = ActiveSupport::JSON.decode(response.body)
+      assert_kind_of Hash, json['scheduling_poll']
+      assert_equal 1, json['scheduling_poll']['id']
+      assert_equal 1, json['scheduling_poll']['issue']['id']
+      assert_kind_of Array, json['scheduling_poll']['scheduling_poll_items']
+      assert_equal 1, json['scheduling_poll']['scheduling_poll_items'][0]['id']
+      assert_equal SchedulingPollItem.find(1).text, json['scheduling_poll']['scheduling_poll_items'][0]['text']
+    end
+  end
+
   test "vote" do
     assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
     assert_equal nil, SchedulingPollItem.find(5).vote_by_user(User.current)

@@ -6,6 +6,8 @@ class SchedulingPollsController < ApplicationController
   before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show, :show_by_issue]
   before_action :ensure_allowed_to_vote_scheduling_polls, :only => [:edit, :update, :vote]
 
+  accept_api_auth :create, :show, :vote
+
   def new
     @issue = Issue.find(params[:issue])
     @project = @issue.project
