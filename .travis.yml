@@ -8,7 +8,7 @@ matrix:
 cache:
   bundler: true
   directories:
-   - redmine-${REDMINE_VERSION}/vendor/bundle
+   - redmine/vendor/bundle
 before_install: bash -x bin/travisci_before_install.sh
 before_script: bash -x bin/travisci_before_script.sh
 script: bash -x bin/travisci_exec_test.sh
