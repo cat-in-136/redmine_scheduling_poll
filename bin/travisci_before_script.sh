@@ -7,9 +7,9 @@ export RAILS_ENV=test
 #REDMINE_VERSION="2.4.0"
 PLUGIN_NAME=redmine_scheduling_poll
 
-cd redmine-${REDMINE_VERSION}
+cd redmine
 
-bundle install --path=vendor/bundle
+bundle install --path=${BUNDLE_PATH:-vendor/bundle}
 
 # Initialize redmine
 bundle exec rake generate_secret_token

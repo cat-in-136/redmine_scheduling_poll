@@ -3,6 +3,7 @@ class SchedulingPollItem < ActiveRecord::Base
 
   belongs_to :scheduling_poll
   has_many :scheduling_votes, :dependent => :destroy
+  has_many :users, lambda { order(:id).distinct }, :through => :scheduling_votes
 
   scope :sorted, lambda { order(:position => :asc) }
 
@@ -12,8 +13,9 @@ class SchedulingPollItem < ActiveRecord::Base
   def vote_by_user(user)
     self.scheduling_votes.find_by(:user => user)
   end
-  def users
-    self.scheduling_votes.map(&:user)
+  def vote_value_by_user(user)
+    v = self.vote_by_user(user)
+    (v.nil?)? 0 : v.value
   end
 
   def vote(user, value=0)

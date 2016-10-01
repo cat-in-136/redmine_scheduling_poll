@@ -8,7 +8,7 @@ retval=0
 #REDMINE_VERSION="2.4.0"
 PLUGIN_NAME=redmine_scheduling_poll
 
-cd redmine-${REDMINE_VERSION}
+cd redmine
 
 # Execute test
 bundle exec rake redmine:plugins:test NAME=${PLUGIN_NAME}

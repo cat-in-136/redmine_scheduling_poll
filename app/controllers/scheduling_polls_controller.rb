@@ -84,20 +84,32 @@ class SchedulingPollsController < ApplicationController
 
   def vote
     user = User.current
-    @poll.scheduling_poll_items.each do |item|
-      item.vote(user, params[:scheduling_vote][item.id.to_s])
-    end
-    unless params[:vote_comment].empty?
-      journal = @poll.issue.init_journal(user, params[:vote_comment])
-      @poll.issue.save
+
+    has_change = @poll.scheduling_poll_items.any? do |item|
+      item.vote_value_by_user(user) != (params[:scheduling_vote][item.id.to_s].to_i || 0)
     end
 
-    respond_to do |format|
-      format.html {
-        flash[:notice] = l(:notice_successful_scheduling_vote)
-        redirect_to :action => 'show'
-      }
-      format.api { render_api_ok }
+    if has_change
+      @poll.scheduling_poll_items.each do |item|
+        item.vote(user, params[:scheduling_vote][item.id.to_s])
+      end
+      unless params[:vote_comment].empty?
+        @poll.issue.init_journal(user, params[:vote_comment])
+        @poll.issue.save
+      end
+
+      respond_to do |format|
+        format.html {
+          flash[:notice] = l(:notice_successful_scheduling_vote)
+          redirect_to :action => 'show'
+        }
+        format.api { render_api_ok }
+      end
+    else
+      respond_to do |format|
+        format.html { render_error l(:error_scheduling_vote_no_change) }
+        format.api { render_api_errors l(:error_scheduling_vote_no_change) }
+      end
     end
   end
 

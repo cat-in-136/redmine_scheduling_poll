@@ -63,6 +63,18 @@
   <%= submit_tag l(:label_vote_on_scheduling_poll) %>
 </div>
 <% end %>
+<%= javascript_tag <<EOD
+$(function() {
+  "use strict";
+  $("#scheduling-poll form").on("submit", function (event) {
+    if ($("[name^=scheduling_vote]").filter(function(){ return this.defaultChecked != this.checked; }).length == 0) {
+      alert(#{l(:error_scheduling_vote_no_change).to_json});
+      event.preventDefault();
+    }
+  });
+});
+EOD
+%>
 
 <% end %>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
@@ -86,7 +98,12 @@
     <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
       <td><%= link_to user.name, user_path(user) %></td>
       <% @poll.scheduling_poll_items.sorted.each do |item| %>
-        <td><%= scheduling_vote_value(item.vote_by_user(user)) %></td>
+        <% vote = item.vote_by_user(user) %>
+        <% if vote %>
+          <%= content_tag :td, scheduling_vote_value(vote), :title => format_time(vote.modify_at || vote.create_at) %>
+        <% else %>
+          <%= content_tag :td %>
+        <% end %>
       <% end %>
     </tr>
     <% end %>
@@ -103,6 +120,13 @@
   </tfoot>
 </table>
 </div>
+<ul>
+<% datetime = Arel::Nodes::NamedFunction.new('COALESCE', [SchedulingVote.arel_table[:modify_at], SchedulingVote.arel_table[:create_at]]) %>
+<% @poll.votes.group(:user).maximum(datetime.to_sql).sort_by { |k,v| v }.each do |v| %>
+  <% user, datetime = v %>
+  <li><%= authoring datetime, user, :label => :label_updated_time_by %></li>
+<% end %>
+</ul>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
