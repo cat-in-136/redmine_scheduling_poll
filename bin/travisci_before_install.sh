@@ -8,7 +8,7 @@ PLUGIN_NAME=redmine_scheduling_poll
 cp -pr . /tmp/${PLUGIN_NAME}
 
 # Get & deploy Redmine
-wget http://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
+wget https://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
 tar zxf redmine-${REDMINE_VERSION}.tar.gz
 rsync -a redmine-${REDMINE_VERSION}/ redmine/
 
