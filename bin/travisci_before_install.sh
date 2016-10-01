@@ -10,7 +10,7 @@ cp -pr . /tmp/${PLUGIN_NAME}
 # Get & deploy Redmine
 wget http://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
 tar zxf redmine-${REDMINE_VERSION}.tar.gz
-mv redmine-${REDMINE_VERSION} redmine
+rsync -a redmine-${REDMINE_VERSION}/ redmine/
 
 # Copy the plugin files to plugin directory
 cp -pr /tmp/${PLUGIN_NAME} redmine/plugins/${PLUGIN_NAME}
