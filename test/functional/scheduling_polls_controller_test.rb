@@ -60,7 +60,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_not_nil flash[:notice]
   end
 
-  test "create.api" do
+  test "create.json" do
     with_settings :rest_api_enabled => '1' do
       poll = SchedulingPoll.find_by(:issue => 1)
       assert_not_nil poll
@@ -69,11 +69,6 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       json = ActiveSupport::JSON.decode(response.body)
       assert_equal 'exist', json['status']
       assert_equal poll.id, json['poll']['id']
-
-      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
-      assert_response :success
-      assert_equal 'application/xml', response.content_type
-      assert_match /exist/, response.body
 
       assert poll.destroy
       poll = nil
@@ -86,6 +81,17 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       json = ActiveSupport::JSON.decode(response.body)
       assert_equal 'ok', json['status']
       assert_equal poll.id, json['poll']['id']
+    end
+  end
+
+  test "create.xml" do
+    with_settings :rest_api_enabled => '1' do
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_equal 'application/xml', response.content_type
+      assert_match /exist/, response.body
 
       assert poll.destroy
       poll = nil
@@ -119,6 +125,26 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_equal [SchedulingPollItem.find(1), SchedulingPollItem.find(3), SchedulingPollItem.last], poll.scheduling_poll_items.sorted.to_a
     assert_redirected_to :action => :show, :id => SchedulingPoll.find_by(:issue => Issue.find(1))
     assert_not_nil flash[:notice]
+  end
+
+  test "update.json" do
+    with_settings :rest_api_enabled => '1' do
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}, :format => :json, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+    end
+  end
+
+  test "update.xml" do
+    with_settings :rest_api_enabled => '1' do
+      poll = SchedulingPoll.find_by(:issue => 1)
+      assert_not_nil poll
+      patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}, :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+    end
   end
 
   test "show" do
@@ -155,12 +181,56 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
       get :show, :id => 1, :format => :xml, :key => User.current.api_key
       assert_response :success
-      assert_equal 'application/xml', @response.content_type
+      assert_equal 'application/xml', response.content_type
 
       get :show, :id => 9999, :format => :json, :key => User.current.api_key # not-exist issue
       assert_response 404
 
       get :show, :id => 9999, :format => :xml, :key => User.current.api_key # not-exist issue
+      assert_response 404
+    end
+  end
+
+  test "show_by_issue" do
+    get :show_by_issue, :issue_id => 1
+    assert_redirected_to :action => :show, :id => 1
+
+    get :show_by_issue, :issue_id => 9999 # not-exist issue
+    assert_response 404
+  end
+
+  test "show_by_issue.api" do
+    with_settings :rest_api_enabled => '1' do
+      get :show_by_issue, :issue_id => 1, :format => :json, :key => User.current.api_key
+      assert_response :success
+      json = ActiveSupport::JSON.decode(response.body)
+      assert_kind_of Hash, json['scheduling_poll']
+      assert_equal 1, json['scheduling_poll']['id']
+      assert_equal 1, json['scheduling_poll']['issue']['id']
+      assert_kind_of Array, json['scheduling_poll']['scheduling_poll_items']
+      assert_equal 1, json['scheduling_poll']['scheduling_poll_items'][0]['id']
+      assert_equal SchedulingPollItem.find(1).text, json['scheduling_poll']['scheduling_poll_items'][0]['text']
+      assert_kind_of Array, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes']
+      assert_equal 1, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][0]['user']['id']
+      assert_equal [{
+        'value' => 3,
+        'text' => Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_3"],
+      }][0], json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][0]['value']
+      assert_equal 2, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][1]['user']['id']
+      assert_equal [{
+        'value' => 2,
+        'text' => Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_2"],
+      }][0], json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][1]['value']
+      assert_response :success
+
+      get :show_by_issue, :issue_id => 1, :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_equal 'application/xml', response.content_type
+
+      get :show_by_issue, :issue_id => 9999, :format => :json, :key => User.current.api_key # not-exist issue
+      assert_response 404
+
+      get :show_by_issue, :issue_id => 9999, :format => :xml, :key => User.current.api_key # not-exist issue
       assert_response 404
     end
   end
@@ -189,11 +259,55 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_response 500
   end
 
-  test "show_by_issue" do
-    get :show_by_issue, :issue_id => 1
-    assert_redirected_to :action => :show, :id => 1
+  test "vote.json" do
+    with_settings :rest_api_enabled => '1' do
+      assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(5).vote_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
 
-    get :show_by_issue, :issue_id => 9999 # not-exist issue
-    assert_response 404
+      post :vote, :id => 2, :scheduling_vote => { '4' => '0', '5' => '1', '6' => '2' }, :vote_comment => '', :format => :json, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+      assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+      assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+      assert_equal 2, SchedulingPollItem.find(6).vote_value_by_user(User.current)
+
+      post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '**vote test msg**', :format => :json, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+      assert_equal 2, SchedulingPollItem.find(4).vote_value_by_user(User.current)
+      assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
+      # Journal does not work in the test (i.e. empty)
+
+      post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '', :format => :json, :key => User.current.api_key # no-change
+      assert_response 422
+    end
+  end
+
+  test "vote.xml" do
+    with_settings :rest_api_enabled => '1' do
+      assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(5).vote_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
+
+      post :vote, :id => 2, :scheduling_vote => { '4' => '0', '5' => '1', '6' => '2' }, :vote_comment => '', :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+      assert_equal nil, SchedulingPollItem.find(4).vote_by_user(User.current)
+      assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+      assert_equal 2, SchedulingPollItem.find(6).vote_value_by_user(User.current)
+
+      post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '**vote test msg**', :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_empty response.body
+      assert_equal 2, SchedulingPollItem.find(4).vote_value_by_user(User.current)
+      assert_equal 1, SchedulingPollItem.find(5).vote_value_by_user(User.current)
+      assert_equal nil, SchedulingPollItem.find(6).vote_by_user(User.current)
+      # Journal does not work in the test (i.e. empty)
+
+      post :vote, :id => 2, :scheduling_vote => { '4' => '2', '5' => '1', '6' => '0' }, :vote_comment => '', :format => :xml, :key => User.current.api_key # no-change
+      assert_response 422
+    end
   end
 end

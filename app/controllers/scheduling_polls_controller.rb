@@ -6,7 +6,7 @@ class SchedulingPollsController < ApplicationController
   before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show, :show_by_issue]
   before_action :ensure_allowed_to_vote_scheduling_polls, :only => [:edit, :update, :vote]
 
-  accept_api_auth :create, :show, :vote
+  accept_api_auth :create, :update, :show, :show_by_issue, :vote
 
   def new
     @issue = Issue.find(params[:issue])
@@ -73,9 +73,15 @@ class SchedulingPollsController < ApplicationController
 
     if @poll.update(scheduling_poll_params)
       flash[:notice] = l(:notice_successful_update)
-      redirect_to @poll
+      respond_to do |format|
+        format.html { redirect_to @poll }
+        format.api { render_api_ok }
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.html { render :edit }
+        format.api { render_validation_errors(@poll) }
+      end
     end
   end
 
@@ -87,8 +93,10 @@ class SchedulingPollsController < ApplicationController
   end
   
   def show_by_issue
-    #redirect_to @poll, :format => "xml"
-    redirect_to :action => :show, :id => @poll.id, :format => params[:format]
+    respond_to do |format|
+      format.html { redirect_to @poll }
+      format.api { render :action => :show }
+    end
   end
 
   def vote
