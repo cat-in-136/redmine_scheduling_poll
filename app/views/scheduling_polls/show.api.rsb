@@ -5,12 +5,14 @@ api.scheduling_poll do
   api.array :scheduling_poll_items do
     @poll.scheduling_poll_items.sorted.each do |item|
       api.scheduling_poll_item :id => item.id, :text => item.text do
-        item.scheduling_votes.each do |vote|
-          api.scheduling_vote do
-            api.user :id => vote.user.id, :name => vote.user.name
-            api.value :value => vote.value, :text => scheduling_vote_value(vote.value)
-            api.create_at vote.create_at if vote.create_at
-            api.modify_at vote.modify_at if vote.modify_at
+        api.array :scheduling_votes do
+          item.scheduling_votes.each do |vote|
+            api.scheduling_vote do
+              api.user :id => vote.user.id, :name => vote.user.name
+              api.value :value => vote.value, :text => scheduling_vote_value(vote.value)
+              api.create_at vote.create_at if vote.create_at
+              api.modify_at vote.modify_at if vote.modify_at
+            end
           end
         end
       end

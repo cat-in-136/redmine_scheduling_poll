@@ -101,6 +101,27 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       assert_kind_of Array, json['scheduling_poll']['scheduling_poll_items']
       assert_equal 1, json['scheduling_poll']['scheduling_poll_items'][0]['id']
       assert_equal SchedulingPollItem.find(1).text, json['scheduling_poll']['scheduling_poll_items'][0]['text']
+      assert_kind_of Array, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes']
+      assert_equal 1, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][0]['user']['id']
+      assert_equal [{
+        'value' => 3,
+        'text' => Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_3"],
+      }][0], json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][0]['value']
+      assert_equal 2, json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][1]['user']['id']
+      assert_equal [{
+        'value' => 2,
+        'text' => Setting.plugin_redmine_scheduling_poll["scheduling_vote_value_2"],
+      }][0], json['scheduling_poll']['scheduling_poll_items'][0]['scheduling_votes'][1]['value']
+
+      get :show, :id => 1, :format => :xml, :key => User.current.api_key
+      assert_response :success
+      assert_equal 'application/xml', @response.content_type
+
+      get :show, :id => 9999, :format => :json, :key => User.current.api_key # not-exist issue
+      assert_response 404
+
+      get :show, :id => 9999, :format => :xml, :key => User.current.api_key # not-exist issue
+      assert_response 404
     end
   end
 
