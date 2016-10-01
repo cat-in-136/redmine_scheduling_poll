@@ -5,6 +5,12 @@ matrix:
       env: REDMINE_VERSION=3.3.0
     - rvm: 2.3.1
       env: REDMINE_VERSION=3.2.3
+env:
+ - BUNDLE_PATH=$HOME/vendor/bundle
+cache:
+  bundler: true
+  directories:
+   - vendor/bundle
 before_install: bash -x bin/travisci_before_install.sh
 before_script: bash -x bin/travisci_before_script.sh
 script: bash -x bin/travisci_exec_test.sh
