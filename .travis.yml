@@ -26,7 +26,11 @@ matrix:
 cache:
   bundler: true
   directories:
-   - redmine/vendor/bundle
+  - redmine/vendor/bundle
 before_install: bash -x bin/travisci_before_install.sh
 before_script: bash -x bin/travisci_before_script.sh
 script: bash -x bin/travisci_exec_test.sh
+notifications:
+  email: false
+  slack:
+    secure: bVxqwfvqhfVOZz7+7OKYXeJVHIAloAiXxI60az2YWf8x4sQrdp6qRqJk8xAy67mhpK7aPpqWzNgFnihQ3bBWDkOMNPt+wqxr6PbjECK3V2G8wTyCb0B6sWgNIsc4fcoLU9tg79LI7PRZXWhSIulHc3Nj2+73dqDJLJrtOmhX/6qdEXjApmcufWmdc/JcwgMoeeSa1krvsd2ksdPpI7856tXW7GHRJk4AWDterTTtouZD33dALWbX4fJiFLVSnPmksHMl2S6PyRt2EYJInB5N5okK+57Zf3smzybwhr8j7hDE4ZnZ5nXqvycsV+OC5dmlbWCrWu+LNtvBJTcSsoRQPOi5l0hWy+C/nOxGnKeNz8WSnvjLmW0lQpkD7vU31v0FzkwTtIBRF1WoHdjqTve7XNeJeiEVDVn0w2NMjg8F7GTsX6ay/ZV1cID5Hf0K6gvPJVd+QsvvWLx/Ch77MhcilUbwUEUPwUoqA6XdQtIOAMR56ko20VJhBhxQmT12U5vqsyK8baTm9vqrLxgUxYhWYLbTn1DPwOgzheRWmPieYbX8gR+EHrTTeeUznStUD+4COcPTcMtrCVuJj/3Mi6gt5DhRM53X2EjDQZR7UV5sq1klXh1DEAv3oLKDtgxDxV+9itH4pZuMMONkrWcEmUPkwhnGgxEBCozGtCGMymQk/dg=
