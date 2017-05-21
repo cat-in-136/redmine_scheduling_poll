@@ -3,8 +3,6 @@ class SchedulingPollsController < ApplicationController
 
   before_action :set_scheduling_poll, :only => [:edit, :update, :show, :vote]
   before_action :set_scheduling_poll_by_issue_id, :only => [:show_by_issue]
-  before_action :ensure_allowed_to_view_scheduling_polls, :only => [:show, :show_by_issue]
-  before_action :ensure_allowed_to_vote_scheduling_polls, :only => [:edit, :update, :vote]
 
   accept_api_auth :create, :update, :show, :show_by_issue, :vote
 
@@ -62,6 +60,7 @@ class SchedulingPollsController < ApplicationController
 
   def edit
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
+    ensure_allowed_to_vote_scheduling_polls
     1.times do |i|
       item = @poll.scheduling_poll_items.build
       item.position = @poll.scheduling_poll_items.count + i
@@ -70,6 +69,7 @@ class SchedulingPollsController < ApplicationController
 
   def update
     raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
+    ensure_allowed_to_vote_scheduling_polls
 
     if @poll.update(scheduling_poll_params)
       flash[:notice] = l(:notice_successful_update)
@@ -86,6 +86,7 @@ class SchedulingPollsController < ApplicationController
   end
 
   def show
+    ensure_allowed_to_view_scheduling_polls
     respond_to do |format|
       format.html
       format.api
@@ -93,6 +94,7 @@ class SchedulingPollsController < ApplicationController
   end
   
   def show_by_issue
+    ensure_allowed_to_view_scheduling_polls
     respond_to do |format|
       format.html { redirect_to @poll }
       format.api { render :action => :show }
@@ -100,6 +102,7 @@ class SchedulingPollsController < ApplicationController
   end
 
   def vote
+    ensure_allowed_to_vote_scheduling_polls
     user = User.current
 
     has_change = @poll.scheduling_poll_items.any? do |item|
