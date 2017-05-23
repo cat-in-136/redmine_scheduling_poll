@@ -24,7 +24,9 @@ class SchedulingPollsController < ApplicationController
   end
 
   def create
-    @poll = SchedulingPoll.find_by(:issue_id => scheduling_poll_params[:issue_id])
+    @issue = Issue.find(scheduling_poll_params[:issue_id])
+    @project = @issue.project
+    @poll = SchedulingPoll.find_by(:issue => @issue)
     if @poll
       respond_to do |format|
         format.html { return redirect_to @poll }
@@ -32,13 +34,11 @@ class SchedulingPollsController < ApplicationController
         format.json { return render :json => {:status => :exist, :poll => { :id => @poll.id } } }
       end
     end
-    @poll = SchedulingPoll.new(scheduling_poll_params)
+
     ensure_allowed_to_vote_scheduling_polls
-    @project = @poll.issue.project
-
-    raise ::Unauthorized unless User.current.allowed_to?(:vote_schduling_polls, @project, :global => true)
-
-    if @poll.save
+    @poll = SchedulingPoll.new(:issue => @issue) # HACK
+    @poll.save! # HACK
+    if @poll.update(scheduling_poll_params)
       journal = @poll.issue.init_journal(User.current, l(:notice_scheduling_poll_successful_create, :link_to_poll => "{{scheduling_poll(#{@poll.id})}}"))
       @poll.issue.save
 
