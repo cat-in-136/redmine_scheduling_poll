@@ -1,8 +1,6 @@
 language: ruby
 matrix:
   include:
-    - rvm: 2.4.1
-      env: REDMINE_VERSION=3.3.3
     - rvm: 2.3.4
       env: REDMINE_VERSION=3.3.3
     - rvm: 2.2.7
