@@ -45,23 +45,37 @@ class SchedulingPollsController < ApplicationController
     end
 
     ensure_allowed_to_vote_scheduling_polls
-    @poll = SchedulingPoll.new(:issue => @issue) # HACK
-    @poll.save! # HACK
-    if @poll.update(scheduling_poll_params)
-      journal = @poll.issue.init_journal(User.current, l(:notice_scheduling_poll_successful_create, :link_to_poll => "{{scheduling_poll(#{@poll.id})}}"))
-      @poll.issue.save
+    @poll = SchedulingPoll.new(:issue => @issue)
+    SchedulingPoll.transaction do
+      # HACK issue:13
+      # "SchedulingPoll.new -> @poll.save -> @poll.update" are required to prevent error.
+      @poll = SchedulingPoll.new(:issue => @issue)
+      if (@poll.save && @poll.update(scheduling_poll_params))
+        journal = @poll.issue.init_journal(User.current, l(:notice_scheduling_poll_successful_create, :link_to_poll => "{{scheduling_poll(#{@poll.id})}}"))
+        @poll.issue.save
 
-      respond_to do |format|
-        format.html {
-          flash[:notice] = l(:notice_successful_create)
-          redirect_to @poll
-        }
-        format.xml { render :text => "<scheduling_poll><status>ok</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
-        format.json { render :json => { :status => :ok, :text => l(:notice_successful_create), :poll => { :id => @poll.id } } }
+        respond_to do |format|
+          format.html {
+            flash[:notice] = l(:notice_successful_create)
+            redirect_to @poll
+          }
+          format.xml { render :text => "<scheduling_poll><status>ok</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
+          format.json { render :json => { :status => :ok, :text => l(:notice_successful_create), :poll => { :id => @poll.id } } }
+        end
+      else
+        @poll = nil
+        raise ActiveRecord::Rollback
       end
-    else
+    end
+
+    unless performed?
+      @poll = SchedulingPoll.new(scheduling_poll_params)
+      1.times do |i|
+        item = @poll.scheduling_poll_items.build
+        item.position = @poll.scheduling_poll_items.count + i
+      end
       respond_to do |format|
-        format.html { render :new }
+        format.html { render :edit }
         format.api { render_validation_errors(@poll) }
       end
     end

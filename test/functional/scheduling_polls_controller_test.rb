@@ -66,6 +66,13 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_equal [1, 2], poll.scheduling_poll_items.map {|v| v.position }
     assert_redirected_to :action => :show, :id => poll
     refute_nil flash[:notice]
+
+    assert poll.destroy
+    poll = nil
+    SchedulingPoll.any_instance.stubs(:update).returns(nil)
+    post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}
+    assert_nil SchedulingPoll.find_by(:issue => 1)
+    assert_template :edit
   end
 
   test "create.json" do
@@ -145,6 +152,11 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_equal [SchedulingPollItem.find(1), SchedulingPollItem.find(3), SchedulingPollItem.last], poll.scheduling_poll_items.sorted.to_a
     assert_redirected_to :action => :show, :id => SchedulingPoll.find_by(:issue => Issue.find(1))
     refute_nil flash[:notice]
+
+    SchedulingPoll.any_instance.stubs(:update).returns(nil)
+    patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :_destroy => 1}]}
+    refute_nil SchedulingPollItem.find(1)
+    assert_template :edit
   end
 
   test "update.json" do
