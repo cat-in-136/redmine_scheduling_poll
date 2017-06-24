@@ -7,10 +7,15 @@ class SchedulingPollsController < ApplicationController
   accept_api_auth :create, :update, :show, :show_by_issue, :vote
 
   def new
-    @issue = Issue.find(params[:issue])
-    @project = @issue.project
-    @poll = SchedulingPoll.find_by(:issue => @issue)
+    begin
+      @issue = Issue.find(params[:issue])
+      @project = @issue.project
+      @poll = SchedulingPoll.find_by(:issue => @issue)
+    rescue ActiveRecord::RecordNotFound
+      return render_404
+    end
     return redirect_to @poll if @poll
+
     @poll = SchedulingPoll.new(:issue => @issue)
     ensure_allowed_to_vote_scheduling_polls
 
@@ -24,9 +29,13 @@ class SchedulingPollsController < ApplicationController
   end
 
   def create
-    @issue = Issue.find(scheduling_poll_params[:issue_id])
-    @project = @issue.project
-    @poll = SchedulingPoll.find_by(:issue => @issue)
+    begin
+      @issue = Issue.find(scheduling_poll_params[:issue_id])
+      @project = @issue.project
+      @poll = SchedulingPoll.find_by(:issue => @issue)
+    rescue ActiveRecord::RecordNotFound
+      return render_404
+    end
     if @poll
       respond_to do |format|
         format.html { return redirect_to @poll }
