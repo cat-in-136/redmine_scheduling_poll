@@ -1,6 +1,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollsControllerTest < ActionController::TestCase
+  NOT_EXIST_ITEM = 9999
+
   fixtures :users, :issues, :projects, :roles,
     :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
@@ -29,6 +31,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
   end
 
   test "new" do
+    get :new, :issue => NOT_EXIST_ITEM
+    assert_response 404
+
     get :new, :issue => 1
     assert_redirected_to :action => :show, :id => SchedulingPoll.find(1)
 
@@ -43,6 +48,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
   end
 
   test "create" do
+    post :create, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM, :scheduling_poll_items_attributes => []}
+    assert_response 404
+
     poll = SchedulingPoll.find_by(:issue => 1)
     refute_nil poll
     post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}
@@ -62,6 +70,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
   test "create.json" do
     with_settings :rest_api_enabled => '1' do
+      post :create, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM, :scheduling_poll_items_attributes => []}, :format => :json, :key => User.current.api_key
+      assert_response 404
+  
       poll = SchedulingPoll.find_by(:issue => 1)
       refute_nil poll
       post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :json, :key => User.current.api_key
@@ -86,6 +97,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
   test "create.xml" do
     with_settings :rest_api_enabled => '1' do
+      post :create, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
+      assert_response 404
+
       poll = SchedulingPoll.find_by(:issue => 1)
       refute_nil poll
       post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
@@ -107,6 +121,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
   end
 
   test "edit" do
+    get :edit, :id => NOT_EXIST_ITEM
+    assert_response 404
+
     get :edit, :id => 1
     assert_response :success
     assert_template :edit
@@ -117,6 +134,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
   end
 
   test "update" do
+    patch :update, :id => NOT_EXIST_ITEM, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM}
+    assert_response 404
+
     poll = SchedulingPoll.find_by(:issue => 1)
     refute_nil poll
     patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}
@@ -129,6 +149,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
   test "update.json" do
     with_settings :rest_api_enabled => '1' do
+      patch :update, :id => NOT_EXIST_ITEM, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM}, :format => :json, :key => User.current.api_key
+      assert_response 404
+
       poll = SchedulingPoll.find_by(:issue => 1)
       refute_nil poll
       patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}, :format => :json, :key => User.current.api_key
@@ -139,6 +162,9 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
   test "update.xml" do
     with_settings :rest_api_enabled => '1' do
+      patch :update, :id => NOT_EXIST_ITEM, :scheduling_poll => {:issue_id => NOT_EXIST_ITEM}, :format => :xml, :key => User.current.api_key
+      assert_response 404
+
       poll = SchedulingPoll.find_by(:issue => 1)
       refute_nil poll
       patch :update, :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]}, :format => :xml, :key => User.current.api_key
@@ -152,7 +178,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     assert_response :success
     assert_template :show
 
-    get :show, :id => 9999 # not-exist issue
+    get :show, :id => NOT_EXIST_ITEM # not-exist issue
     assert_response 404
   end
 
@@ -183,10 +209,10 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       assert_response :success
       assert_equal 'application/xml', response.content_type
 
-      get :show, :id => 9999, :format => :json, :key => User.current.api_key # not-exist issue
+      get :show, :id => NOT_EXIST_ITEM, :format => :json, :key => User.current.api_key # not-exist issue
       assert_response 404
 
-      get :show, :id => 9999, :format => :xml, :key => User.current.api_key # not-exist issue
+      get :show, :id => NOT_EXIST_ITEM, :format => :xml, :key => User.current.api_key # not-exist issue
       assert_response 404
     end
   end
@@ -195,7 +221,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :show_by_issue, :issue_id => 1
     assert_redirected_to :action => :show, :id => 1
 
-    get :show_by_issue, :issue_id => 9999 # not-exist issue
+    get :show_by_issue, :issue_id => NOT_EXIST_ITEM # not-exist issue
     assert_response 404
   end
 
@@ -227,10 +253,10 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       assert_response :success
       assert_equal 'application/xml', response.content_type
 
-      get :show_by_issue, :issue_id => 9999, :format => :json, :key => User.current.api_key # not-exist issue
+      get :show_by_issue, :issue_id => NOT_EXIST_ITEM, :format => :json, :key => User.current.api_key # not-exist issue
       assert_response 404
 
-      get :show_by_issue, :issue_id => 9999, :format => :xml, :key => User.current.api_key # not-exist issue
+      get :show_by_issue, :issue_id => NOT_EXIST_ITEM, :format => :xml, :key => User.current.api_key # not-exist issue
       assert_response 404
     end
   end
