@@ -21,3 +21,4 @@ This project is currently under *beta* stage of development.
 
 * belongs to issue (not project)
 * anybody can add alternative date
+* notifies new polls to slack channel if {redmine-slack}[https://github.com/sciyoshi/redmine-slack] plugin installed (but voting and poll modification is not notified)
