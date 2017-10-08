@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module RedmineSchedulingPoll
   class Hooks < Redmine::Hook::ViewListener
 

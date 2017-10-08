@@ -1,3 +1,4 @@
+<%# frozen_string_literal: true %>
 <% 5.step(1, -1) do |item_value| %>
 <p>
   <%= label_tag("settings[scheduling_vote_value_#{item_value}]", l(:label_settings_scheduling_vote_value, :num => item_value)) %>

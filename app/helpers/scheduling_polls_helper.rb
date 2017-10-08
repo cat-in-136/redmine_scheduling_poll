@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module SchedulingPollsHelper
 
   def scheduling_vote_value(val=0)
@@ -20,7 +21,7 @@ module SchedulingPollsHelper
   end
 
   def render_date_related_parameter_of_issue(issue)
-    s = ''
+    s = ''.dup
     s << '<h3>' << link_to(issue, issue_path(issue)) << '</h3>'
     s << '<div>'
     unless issue.disabled_core_fields.include?('start_date')

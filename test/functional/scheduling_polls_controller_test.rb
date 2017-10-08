@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollsControllerTest < ActionController::TestCase
@@ -135,7 +136,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       post :create, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key
       assert_response :success
       assert_equal 'application/xml', response.content_type
-      assert_match /exist/, response.body
+      assert_match(/exist/, response.body)
 
       assert poll.destroy
       poll = nil
@@ -146,7 +147,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       assert_equal [1, 2], poll.scheduling_poll_items.map {|v| v.position }
       assert_response :success
       assert_equal 'application/xml', response.content_type
-      assert_match /ok/, response.body
+      assert_match(/ok/, response.body)
     end
   end
 
