@@ -3,6 +3,7 @@
 Scheduling Poll is a plugin which provides simple polls to scheduling appointments on Redmine.
 
 {<img src="https://travis-ci.org/cat-in-136/redmine_scheduling_poll.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/cat-in-136/redmine_scheduling_poll]
+{<img src="https://img.shields.io/redmine/plugin/stars/redmine_scheduling_poll.svg" alt="Redmine Plugins" />}[https://www.redmine.org/plugins/redmine_scheduling_poll]
 
 == How to install
 
