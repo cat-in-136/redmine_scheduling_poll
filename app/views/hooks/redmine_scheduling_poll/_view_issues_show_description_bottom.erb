@@ -7,7 +7,7 @@
 <% if scheduling_poll %>
 <% vote_values = Hash[*SchedulingPollsController.helpers.scheduling_vote_values_array.flatten] %>
   <div class="contextual">
-    <%= link_to l(:label_vote_on_scheduling_poll), scheduling_poll_path(scheduling_poll) %>
+    <%= link_to l(:label_vote_on_scheduling_poll), scheduling_poll_url(scheduling_poll) %>
   </div>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
   <div class="autoscroll">
@@ -34,7 +34,7 @@
   </div>
 <% else # unless scheduling_poll %>
   <div class="contextual">
-    <%= link_to l(:label_new), scheduling_polls_new_path(:issue => @issue) %>
+    <%= link_to l(:label_new), scheduling_polls_new_url(:issue => @issue) %>
   </div>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>
@@ -42,12 +42,12 @@
 <% scheduling_poll = SchedulingPoll.find_by(:issue => @issue) %>
 <% if scheduling_poll %>
   <div class="contextual">
-    <%= link_to l(:label_vote_on_scheduling_poll), scheduling_poll_path(scheduling_poll) %>
+    <%= link_to l(:label_vote_on_scheduling_poll), scheduling_poll_url(scheduling_poll) %>
   </div>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% else # unless scheduling_poll %>
   <div class="contextual">
-    <%= link_to l(:label_new), scheduling_polls_new_path(:issue => @issue) %>
+    <%= link_to l(:label_new), scheduling_polls_new_url(:issue => @issue) %>
   </div>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>

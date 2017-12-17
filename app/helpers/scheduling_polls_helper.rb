@@ -22,7 +22,7 @@ module SchedulingPollsHelper
 
   def render_date_related_parameter_of_issue(issue)
     s = ''.dup
-    s << '<h3>' << link_to(issue, issue_path(issue)) << '</h3>'
+    s << '<h3>' << link_to(issue, issue_url(issue)) << '</h3>'
     s << '<div>'
     unless issue.disabled_core_fields.include?('start_date')
       s << '<p><strong>' << h(l(:field_start_date)) << '</strong></p>'

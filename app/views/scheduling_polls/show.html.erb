@@ -10,7 +10,7 @@
 
 <div id="scheduling-poll" class="box">
 <div class="contextual">
-  <%= link_to l(:label_edit_scheduling_poll_items), scheduling_poll_edit_path(@poll), :class => 'icon icon-edit' %>
+  <%= link_to l(:label_edit_scheduling_poll_items), scheduling_poll_edit_url(@poll), :class => 'icon icon-edit' %>
 </div>
 <h3><%= @poll.issue.subject %></h3>
 
@@ -97,7 +97,7 @@ EOD
   <tbody>
     <% @poll.users.each_with_index do |user,i| %>
     <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
-      <td><%= link_to user.name, user_path(user) %></td>
+      <td><%= link_to user.name, user_url(user) %></td>
       <% @poll.scheduling_poll_items.sorted.each do |item| %>
         <% vote = item.vote_by_user(user) %>
         <% if vote %>
