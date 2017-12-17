@@ -7,6 +7,7 @@
 <% end %>
 
 <h2><%=h l :label_scheduling_poll %></h2>
+<% html_title "#{l :label_scheduling_poll}", "#{@poll.issue.tracker.name} ##{@poll.issue.id}: #{@poll.issue.subject}" %>
 
 <div id="scheduling-poll" class="box">
 <div class="contextual">

@@ -3,7 +3,7 @@ require File.expand_path('../../test_helper', __FILE__)
 require File.expand_path('test/ui/base', Rails.root)
 
 class Redmine::UiTest::SchedulingPollsTest < Redmine::UiTest::Base
-  fixtures :users, :issues, :projects, :roles,
+  fixtures :users, :issues, :projects, :roles, :trackers,
     :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   def setup

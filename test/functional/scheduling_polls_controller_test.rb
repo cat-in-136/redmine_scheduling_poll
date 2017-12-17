@@ -4,7 +4,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class SchedulingPollsControllerTest < ActionController::TestCase
   NOT_EXIST_ITEM = 9999
 
-  fixtures :users, :issues, :projects, :roles,
+  fixtures :users, :issues, :projects, :roles, :trackers,
     :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   def setup
@@ -213,6 +213,8 @@ class SchedulingPollsControllerTest < ActionController::TestCase
     get :show, :id => 1
     assert_response :success
     assert_template :show
+    assert_select 'title', :text => "Scheduling poll - Bug #1: Cannot print recipes - eCookbook - Redmine"
+    assert_select '#sidebar h3 > a[href=?]'.dup, issue_url(Issue.find(1)), :text => "Bug #1: Cannot print recipes"
 
     get :show, :id => NOT_EXIST_ITEM # not-exist issue
     assert_response 404
