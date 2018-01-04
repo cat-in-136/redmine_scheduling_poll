@@ -54,7 +54,6 @@ class SchedulingPollsController < ApplicationController
       if (@poll.save && @poll.update(scheduling_poll_params))
         journal = @poll.issue.init_journal(User.current, l(:notice_scheduling_poll_successful_create, :link_to_poll => "{{scheduling_poll(#{@poll.id})}}"))
         @poll.issue.save
-        notify_special_journal_updates(journal)
 
         respond_to do |format|
           format.html {
@@ -139,9 +138,8 @@ class SchedulingPollsController < ApplicationController
         item.vote(user, params[:scheduling_vote][item.id.to_s])
       end
       unless params[:vote_comment].empty?
-        journal = @poll.issue.init_journal(user, params[:vote_comment])
+        @poll.issue.init_journal(user, params[:vote_comment])
         @poll.issue.save
-        notify_special_journal_updates(journal)
       end
 
       respond_to do |format|
@@ -162,7 +160,6 @@ class SchedulingPollsController < ApplicationController
   private
   def set_scheduling_poll
     @poll = SchedulingPoll.find(params[:id])
-    @issue = @poll.issue
     @project = @poll.issue.project
   rescue ActiveRecord::RecordNotFound
     render_404
@@ -170,7 +167,6 @@ class SchedulingPollsController < ApplicationController
   def set_scheduling_poll_by_issue_id
     @poll = SchedulingPoll.find_by(:issue_id => params[:issue_id])
     raise ActiveRecord::RecordNotFound if @poll.nil?
-    @issue = @poll.issue
     @project = @poll.issue.project
   rescue ActiveRecord::RecordNotFound
     render_404
@@ -187,21 +183,5 @@ class SchedulingPollsController < ApplicationController
     params.require(:scheduling_poll).permit(:issue_id, :scheduling_poll_items_attributes => [:id, :text, :position, :_destroy])
   end
 
-  def notify_special_journal_updates(journal)
-    # Notify to slack
-    if Redmine::Plugin.installed?(:redmine_slack)
-      [].tap do |response|
-        Redmine::Hook.listeners.each do |listener|
-          if listener.kind_of?(SlackListener)
-            response << listener.controller_issues_edit_after_save(
-              :params => nil, # :redmine_slack does not use :params as of now
-              :issue => @issue,
-              :journal => journal,
-            )
-          end
-        end
-      end
-    end
-  end
 
 end
