@@ -22,35 +22,12 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       end
       alias_method_chain :visible?, :scheduling_poll_test
     end
-
-    # install Fake Redmine Slack
-    unless Redmine::Plugin.installed?(:redmine_slack)
-      Redmine::Plugin.register :redmine_slack do
-        name 'Fake Redmine Slack'
-        version '0.2'
-      end
-      eval 'module ::SlackListener end'
-      listener_klass = Class.new
-      listener_klass.include Singleton
-      listener_klass.include ::SlackListener
-      listener_klass.any_instance.stubs(:controller_issues_edit_after_save)
-      Redmine::Hook.add_listener(listener_klass)
-    end
   end
 
   def teardown
     # Monkey un-patching of "visible_with_scheduling_poll_test?"
     Issue.module_eval do
       alias_method :visible?, :visible_without_scheduling_poll_test?
-    end
-
-    # uninstall Fake Redmine Slack
-    if Redmine::Plugin.find(:redmine_slack).name == 'Fake Redmine Slack'
-      Redmine::Plugin.unregister(:redmine_slack)
-      Redmine::Hook.class_variable_get(:@@listener_classes).reject! do |klass|
-        klass.include? ::SlackListener
-      end
-      Redmine::Hook.clear_listeners_instances
     end
   end
 
