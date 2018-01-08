@@ -12,10 +12,11 @@ fi
 # Shelve the plugin files to a temporary directory
 cp -pr . /tmp/${PLUGIN_NAME}
 
-# Get & deploy Redmine
-wget https://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz
-tar zxf redmine-${REDMINE_VERSION}.tar.gz
-rsync -a redmine-${REDMINE_VERSION}/ redmine/
+# Get Redmine code
+if [ -d redmine ]; then
+  rm -rf redmine
+fi
+git clone -b ${REDMINE_VERSION} --depth=1 https://github.com/redmine/redmine.git
 
 # Restore the cache if exists
 if [ -f /tmp/vendor ]; then
