@@ -5,7 +5,7 @@
 PLUGIN_NAME=redmine_scheduling_poll
 
 # Shelve the cache if exists
-if [ -f redmine/vendor/bundle ]; then
+if [ -d redmine/vendor/bundle ]; then
   mv redmine/vendor /tmp/vendor
 fi
 
@@ -19,7 +19,7 @@ fi
 git clone -b ${REDMINE_VERSION} --depth=1 https://github.com/redmine/redmine.git
 
 # Restore the cache if exists
-if [ -f /tmp/vendor ]; then
+if [ -d /tmp/vendor ]; then
   mv /tmp/vendor redmine/vendor
 fi
 
