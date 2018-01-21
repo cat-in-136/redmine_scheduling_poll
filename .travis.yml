@@ -2,6 +2,8 @@ language: ruby
 cache: bundler
 matrix:
   include:
+    - rvm: 2.5.0
+      env: REDMINE_VERSION=3.4.4
     - rvm: 2.4.3
       env: REDMINE_VERSION=3.4.4
     - rvm: 2.3.6
