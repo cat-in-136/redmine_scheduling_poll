@@ -48,8 +48,9 @@
         <% end %>
       </td>
     <% end %>
+    <% num_of_votes = item.scheduling_votes.group(:value).count %>
     <% vote_values.each_pair do |k,v| %>
-      <%= content_tag :td, item.scheduling_votes.where(:value => k).length, :class => "scheduling-poll-vote-result-side-col" %>
+      <%= content_tag :td, num_of_votes[v], :class => "scheduling-poll-vote-result-side-col" %>
     <% end %>
   </tr>
 <% end %>

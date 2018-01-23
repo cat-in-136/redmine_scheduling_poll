@@ -24,8 +24,9 @@
       <% scheduling_poll.scheduling_poll_items.sorted.each_with_index do |item,i| %>
         <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
           <%= content_tag :td, item.text %>
+          <% num_of_votes = item.scheduling_votes.group(:value).count %>
           <% vote_values.each_pair do |k,v| %>
-            <%= content_tag :td, item.scheduling_votes.where(:value => k).length %>
+            <%= content_tag :td, num_of_votes[v] %>
           <% end %>
         </tr>
       <% end %>
