@@ -26,7 +26,7 @@
           <%= content_tag :td, item.text %>
           <% num_of_votes = item.scheduling_votes.group(:value).count %>
           <% vote_values.each_pair do |k,v| %>
-            <%= content_tag :td, num_of_votes[v] %>
+            <%= content_tag :td, num_of_votes[k] || 0 %>
           <% end %>
         </tr>
       <% end %>

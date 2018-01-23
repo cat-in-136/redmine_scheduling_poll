@@ -50,7 +50,7 @@
     <% end %>
     <% num_of_votes = item.scheduling_votes.group(:value).count %>
     <% vote_values.each_pair do |k,v| %>
-      <%= content_tag :td, num_of_votes[v], :class => "scheduling-poll-vote-result-side-col" %>
+      <%= content_tag :td, num_of_votes[k] || 0, :class => "scheduling-poll-vote-result-side-col" %>
     <% end %>
   </tr>
 <% end %>
@@ -115,8 +115,9 @@ EOD
     <% vote_values.keys.each_with_index do |k,i| %>
     <tr class="<%= (i % 2 == 0)? 'odd' : 'even' %>">
       <td><%=h vote_values[k] %></td>
+      <% num_of_votes = SchedulingVote.where(:value => k).group(:scheduling_poll_item_id).count %>
       <% @poll.scheduling_poll_items.sorted.each do |item| %>
-      <%= content_tag :td, item.scheduling_votes.where(:value => k).length %>
+      <%= content_tag :td, num_of_votes[item.id] || 0 %>
       <% end %>
     </tr>
     <% end %>
