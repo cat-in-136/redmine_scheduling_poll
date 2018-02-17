@@ -40,7 +40,7 @@ class SchedulingPollsController < ApplicationController
     if @poll
       respond_to do |format|
         format.html { return redirect_to @poll }
-        format.xml { return render :xml => "<scheduling_poll><status>exist</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
+        format.xml { return render :xml => {:status => :exist, :poll => { :id => @poll.id } }.to_xml(:root => :scheduling_poll) }
         format.json { return render :json => {:status => :exist, :poll => { :id => @poll.id } } }
       end
     end
