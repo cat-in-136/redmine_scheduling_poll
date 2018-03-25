@@ -72,7 +72,8 @@ $(function() {
   $("#scheduling-poll form").on("submit", function (event) {
     if ($("[name^=scheduling_vote]").filter(function(){ return this.defaultChecked != this.checked; }).length == 0) {
       alert(#{l(:error_scheduling_vote_no_change).to_json});
-      event.preventDefault();
+      $(this).removeAttr("data-submitted");
+      return false;
     }
   });
 });

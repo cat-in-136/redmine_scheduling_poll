@@ -13,6 +13,44 @@ class Redmine::UiTest::SchedulingPollsTest < Redmine::UiTest::Base
     Role.find(4).add_permission! :vote_schduling_polls
 
     @dateformat = Setting.plugin_redmine_scheduling_poll["scheduling_poll_item_date_format"]
+
+    # FIXME Monkey patching to pass issue#visibule?
+    Issue.module_eval do
+      def visible_with_scheduling_poll_test?(usr=nil)
+        !self.is_private? || (self.author == (usr || User.current))
+      end
+      alias_method_chain :visible?, :scheduling_poll_test
+    end
+  end
+
+  def teardown
+    # Monkey un-patching of "visible_with_scheduling_poll_test?"
+    Issue.module_eval do
+      alias_method :visible?, :visible_without_scheduling_poll_test?
+    end
+  end
+
+  def test_vote_from_show
+    log_user('jsmith', 'jsmith')
+
+    visit '/scheduling_polls/1/show'
+    page.first('#scheduling_vote_3_1').click
+    page.first('#scheduling-poll form input[type="submit"]').click
+
+    assert page.has_selector?('#flash_notice', :text => 'Successful vote.')
+    assert page.has_selector?('#scheduling_vote_3_1:checked', :count => 1)
+    assert_equal [[1, 2], [2, 3], [3, 1]], SchedulingPoll.find(1).votes_by_user(User.find(2)).pluck(:scheduling_poll_item_id, :value)
+
+    # issue cat-in-136/redmine_scheduling_poll#23 from here
+
+    page.first('#scheduling-poll form input[type="submit"]').click
+
+    page.first('#scheduling_vote_3_2').click
+    page.first('#scheduling-poll form input[type="submit"]').click
+
+    assert page.has_selector?('#flash_notice', :text => 'Successful vote.')
+    assert page.has_selector?('#scheduling_vote_3_2:checked', :count => 1)
+    assert_equal [[1, 2], [2, 3], [3, 2]], SchedulingPoll.find(1).votes_by_user(User.find(2)).pluck(:scheduling_poll_item_id, :value)
   end
 
   def test_edit_toggle_date_picker
