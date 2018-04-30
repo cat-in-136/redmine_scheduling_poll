@@ -4,30 +4,17 @@ require File.expand_path('../../test_helper', __FILE__)
 class SchedulingPollsControllerTest < ActionController::TestCase
   NOT_EXIST_ITEM = 9999
 
-  fixtures :users, :issues, :projects, :roles, :trackers,
+  fixtures :users, :issues, :projects, :trackers,
+    :enabled_modules, :members, :member_roles, :roles,
     :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   def setup
-    User.current = User.find(2)
-    @request.session[:user_id] = User.current.id
+    User.current = nil
+    @request.session[:user_id] = User.find(2)
     Project.find(1).enable_module! :scheduling_polls
-    role = Role.find(4)
-    role.add_permission! :view_schduling_polls
-    role.add_permission! :vote_schduling_polls
-
-    # FIXME Monkey patching to pass issue#visibule?
-    Issue.module_eval do
-      def visible_with_scheduling_poll_test?(usr=nil)
-        !self.is_private? || (self.author == (usr || User.current))
-      end
-      alias_method_chain :visible?, :scheduling_poll_test
-    end
-  end
-
-  def teardown
-    # Monkey un-patching of "visible_with_scheduling_poll_test?"
-    Issue.module_eval do
-      alias_method :visible?, :visible_without_scheduling_poll_test?
+    Role.all.each do |role|
+      role.add_permission! :view_schduling_polls
+      role.add_permission! :vote_schduling_polls
     end
   end
 
