@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 require File.expand_path('../../test_helper', __FILE__)
+return if Rails.version > "4" # do not run UI test for redmine4+
+
 require File.expand_path('test/ui/base', Rails.root)
 
 class Redmine::UiTest::SchedulingPollsTest < Redmine::UiTest::Base
