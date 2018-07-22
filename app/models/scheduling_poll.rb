@@ -8,7 +8,22 @@ class SchedulingPoll < ActiveRecord::Base
   has_many :votes, :through => :scheduling_poll_items, :source => :scheduling_votes
   has_many :users, lambda { order(:id).distinct }, :through => :scheduling_poll_items
 
+  delegate :project, :to => :issue
+
   validates :issue, :presence => true
+
+  acts_as_event :title => Proc.new { |o| "#{l(:label_scheduling_poll)}: #{o.issue}" },
+                :description => nil,
+                :datetime => :created_at,
+                :author => nil,
+                :group => :issue,
+                :url => Proc.new { |o| {:controller => 'scheduling_polls', :action => 'show', :id => o.id } }
+
+  acts_as_activity_provider :type => "scheduling_poll",
+                            :timestamp => :created_at,
+                            :permission => :view_schduling_polls,
+                            :author_key => nil,
+                            :scope =>joins(:issue => :project)
 
   def votes_by_user(user)
     self.votes.where(:user => user)

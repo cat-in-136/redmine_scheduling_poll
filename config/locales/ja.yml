@@ -3,6 +3,7 @@ ja:
   permission_view_schduling_polls: スケジュール調整の表示
   permission_vote_schduling_polls: スケジュール調整への回答
   label_scheduling_poll: スケジュール調整
+  label_scheduling_poll_plural: スケジュール調整
   label_edit_scheduling_poll_items: 回答項目の編集
   label_add_comment_with_scheduling_poll_vote: コメントを追記
   label_vote_on_scheduling_poll: 回答
