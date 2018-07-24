@@ -4,6 +4,7 @@ en:
   permission_vote_schduling_polls: Vote on scheduling polls
   label_scheduling_poll: Scheduling poll
   label_scheduling_poll_plural: Scheduling polls
+  label_scheduling_vote_plural: Votes
   label_edit_scheduling_poll_items: Edit poll items
   label_add_comment_with_scheduling_poll_vote: Add a comment
   label_vote_on_scheduling_poll: Vote

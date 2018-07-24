@@ -5,6 +5,7 @@ fr:
   permission_vote_schduling_polls: Voter aux sondages
   label_scheduling_poll: Sondage
   label_scheduling_poll_plural: Sondages
+  label_scheduling_vote_plural: Voter
   label_edit_scheduling_poll_items: Edition des choix du sondage
   label_add_comment_with_scheduling_poll_vote: Ajouter un commentaire
   label_vote_on_scheduling_poll: Voter
