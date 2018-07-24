@@ -11,6 +11,8 @@ class SchedulingPollItem < ActiveRecord::Base
   validates :scheduling_poll, :presence => true
   validates :text, :presence => true, :allow_blank => false
 
+  delegate :project, :to => :scheduling_poll
+
   def vote_by_user(user)
     self.scheduling_votes.find_by(:user => user)
   end

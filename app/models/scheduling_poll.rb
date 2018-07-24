@@ -16,7 +16,6 @@ class SchedulingPoll < ActiveRecord::Base
                 :description => nil,
                 :datetime => :created_at,
                 :author => nil,
-                :group => :issue,
                 :url => Proc.new { |o| {:controller => 'scheduling_polls', :action => 'show', :id => o.id } }
 
   acts_as_activity_provider :type => "scheduling_poll",
