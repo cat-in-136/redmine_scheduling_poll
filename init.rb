@@ -16,6 +16,7 @@ Redmine::Plugin.register :redmine_scheduling_poll do
   end
   Redmine::Activity.map do |activity|
     activity.register(:scheduling_poll)
+    activity.register(:scheduling_poll_item)
     activity.register(:scheduling_vote)
   end
 

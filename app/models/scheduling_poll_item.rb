@@ -8,6 +8,19 @@ class SchedulingPollItem < ActiveRecord::Base
 
   scope :sorted, lambda { order(:position => :asc) }
 
+  acts_as_event :title => Proc.new { |o| "#{l(:label_scheduling_poll)}: #{o.scheduling_poll.issue}" },
+                :description => Proc.new { |o| "#{l(:label_scheduling_poll_item)}: #{o.text}" },
+                :datetime => Proc.new { |o| o.updated_at || o.created_at },
+                :author => nil,
+                :group => :scheduling_poll,
+                :url => Proc.new { |o| {:controller => 'scheduling_polls', :action => 'show', :id => o.scheduling_poll.id } }
+
+  acts_as_activity_provider :type => "scheduling_poll_item",
+                            :timestamp => "COALESCE(#{table_name}.updated_at, #{table_name}.created_at)",
+                            :permission => :view_schduling_polls,
+                            :author_key => nil,
+                            :scope =>joins(:scheduling_poll => {:issue => :project})
+
   validates :scheduling_poll, :presence => true
   validates :text, :presence => true, :allow_blank => false
 

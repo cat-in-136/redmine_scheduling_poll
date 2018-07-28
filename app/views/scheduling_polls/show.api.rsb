@@ -5,6 +5,8 @@ api.scheduling_poll do
   api.array :scheduling_poll_items do
     @poll.scheduling_poll_items.sorted.each do |item|
       api.scheduling_poll_item :id => item.id, :text => item.text do
+        api.created_at item.created_at if item.created_at
+        api.updated_at item.updated_at if item.updated_at
         api.array :scheduling_votes do
           item.scheduling_votes.each do |vote|
             api.scheduling_vote do
