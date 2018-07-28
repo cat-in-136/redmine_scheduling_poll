@@ -26,9 +26,9 @@ class SchedulingPollItem < ActiveRecord::Base
     v = self.vote_by_user(user)
     unless value == 0
       if v.nil?
-        v = self.scheduling_votes.create(:user => user, :value => value, :create_at => Time.now)
+        v = self.scheduling_votes.create(:user => user, :value => value)
       else
-        v.update(:value => value, :modify_at => Time.now)
+        v.update(:value => value)
       end
     else # remove vote
       v.destroy unless v.nil?

@@ -4,16 +4,20 @@ scheduling_poll_item_001:
   scheduling_poll_id: 1
   position: 1
   text: scheduling_poll_item_001
+  created_at: <%= 50.seconds.ago %>
 scheduling_poll_item_002:
   id: 2
   scheduling_poll_id: 1
   position: 2
   text: scheduling_poll_item_002
+  created_at: <%= 50.seconds.ago %>
 scheduling_poll_item_003:
   id: 3
   scheduling_poll_id: 1
   position: 3
   text: scheduling_poll_item_003
+  created_at: <%= 50.seconds.ago %>
+  updated_at: <%= 30.seconds.ago %>
 scheduling_poll_item_004:
   id: 4
   scheduling_poll_id: 2
