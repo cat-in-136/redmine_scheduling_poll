@@ -2,7 +2,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollItemTest < ActiveSupport::TestCase
-  fixtures :issues, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+  fixtures :projects, :issues, :roles, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   test "shall not save scheduling poll item without scheduling poll" do
     scheduling_poll_item = SchedulingPollItem.new
@@ -75,6 +75,19 @@ class SchedulingPollItemTest < ActiveSupport::TestCase
     scheduling_poll_item = SchedulingPollItem.find(2)
     users = User.where(user_id.eq(1).or(user_id.eq(2)))
     assert_equal users.sort, scheduling_poll_item.users.sort
+  end
+
+  test "activity fetcher shall be return based on :updated_at or :created_at" do
+    Project.find(1).enable_module! :scheduling_polls
+    Role.all.each do |role|
+      role.add_permission! :view_schduling_polls
+    end
+    fetcher = Redmine::Activity::Fetcher.new(User.find(2))
+    fetcher.scope = %w[scheduling_poll_item]
+
+    expected = SchedulingPollItem.all.select {|v| v.updated_at || v.created_at }.
+      sort {|a,b| (b.updated_at || b.created_at) <=> (a.updated_at || a.created_at) }
+    assert_equal expected, fetcher.events(1.day.ago, Date.today + 1)
   end
 
   test "vote with non-zero value shall add the vote or update" do
