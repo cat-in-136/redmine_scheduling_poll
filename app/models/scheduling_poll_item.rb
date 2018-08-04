@@ -19,7 +19,7 @@ class SchedulingPollItem < ActiveRecord::Base
                             :timestamp => "COALESCE(#{table_name}.updated_at, #{table_name}.created_at)",
                             :permission => :view_schduling_polls,
                             :author_key => nil,
-                            :scope =>joins(:scheduling_poll => {:issue => :project})
+                            :scope =>where("COALESCE(#{table_name}.updated_at, #{table_name}.created_at) IS NOT NULL").joins(:scheduling_poll => {:issue => :project})
 
   validates :scheduling_poll, :presence => true
   validates :text, :presence => true, :allow_blank => false

@@ -2,7 +2,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollTest < ActiveSupport::TestCase
-  fixtures :issues, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+  fixtures :projects, :issues, :roles, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   test "shall not save scheduling poll without issue" do
     scheduling_poll = SchedulingPoll.new
@@ -35,6 +35,28 @@ class SchedulingPollTest < ActiveSupport::TestCase
     assert_empty scheduling_poll.votes
   end
 
+  test "users shall return all the users who vote the poll" do
+    scheduling_poll = SchedulingPoll.find(1)
+    user_id = User.arel_table[:id]
+    users = User.where(user_id.eq(1).or(user_id.eq(2).or(user_id.eq(3))))
+    assert_equal users.sort, scheduling_poll.users.sort
+
+    scheduling_poll = SchedulingPoll.find(2)
+    assert_empty scheduling_poll.users.sort
+  end
+
+  test "activity fetcher shall be return based on :created_at" do
+    Project.find(1).enable_module! :scheduling_polls
+    Role.all.each do |role|
+      role.add_permission! :view_schduling_polls
+    end
+    fetcher = Redmine::Activity::Fetcher.new(User.find(2))
+    fetcher.scope = %w[scheduling_poll]
+
+    expected = SchedulingPoll.all.sort {|a,b| b.created_at <=> a.created_at }
+    assert_equal expected, fetcher.events(1.day.ago, Date.today + 1)
+  end
+
   test "votes_by_user shall return all the votes which the user votes" do
     scheduling_poll = SchedulingPoll.find(1)
 
@@ -50,15 +72,5 @@ class SchedulingPollTest < ActiveSupport::TestCase
     scheduling_poll = SchedulingPoll.find(2)
     user = User.find(1)
     assert_empty scheduling_poll.votes_by_user(user)
-  end
-
-  test "users shall return all the users who vote the poll" do
-    scheduling_poll = SchedulingPoll.find(1)
-    user_id = User.arel_table[:id]
-    users = User.where(user_id.eq(1).or(user_id.eq(2).or(user_id.eq(3))))
-    assert_equal users.sort, scheduling_poll.users.sort
-
-    scheduling_poll = SchedulingPoll.find(2)
-    assert_empty scheduling_poll.users.sort
   end
 end
