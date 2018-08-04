@@ -128,14 +128,23 @@ EOD
   </tfoot>
 </table>
 </div>
-<ul>
-<% datetime = Arel::Nodes::NamedFunction.new('COALESCE', [SchedulingVote.arel_table[:updated_at], SchedulingVote.arel_table[:created_at]]) %>
-<% @poll.votes.group(:user).maximum(datetime.to_sql).sort_by { |k,v| v }.each do |v| %>
-  <% user, datetime = v %>
-  <li>
-    <%= avatar(user, :size => "24") %>
-    <%= authoring datetime, user, :label => :label_updated_time_by %>
-  </li>
+
+<ul class="scheduling-voting-result-timeline">
+<% ((@poll.votes.group(:user).maximum("COALESCE(scheduling_votes.updated_at, scheduling_votes.created_at)").to_a) +
+    (@poll.scheduling_poll_items.map{|v| [v, v.updated_at || v.created_at]} )).reject{|v| v[1].nil? }.sort{|a,b| a[1] <=> b[1]}.each do |v| %>
+  <% subject, datetime = v %>
+  <% if subject.kind_of? User
+     user = subject %>
+    <li>
+      <%= avatar(user, :size => "24") %>
+      <%= authoring datetime, user, :label => :label_updated_time_by %>
+    </li>
+  <% elsif subject.kind_of? SchedulingPollItem %>
+    <li class="scheduling-poll-item-update">
+      <%= l(:label_scheduling_poll_item) %> "<%=h subject.text %>":
+      <%= l(:label_updated_time, :value => time_tag(datetime)).html_safe %>
+    </li>
+  <% end %>
 <% end %>
 </ul>
 <% else %><%# if @poll.scheduling_poll_items.empty? %>

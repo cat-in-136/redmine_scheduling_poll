@@ -8,6 +8,10 @@
     background-color: #FFD;
 }
 
+.scheduling-voting-result-timeline .scheduling-poll-item-update {
+    color: #888;
+}
+
 @media all and (max-width: 899px) {
     .scheduling-poll-vote-result-side-col {
         display: none;
