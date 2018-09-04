@@ -16,6 +16,7 @@ fr:
   label_remove_scheduling_poll_item: Supprimer un choix
   label_add_scheduling_poll_item: Ajouter un choix
   label_update_scheduling_poll_items: Mettre a jour
+  label_link_scheduling_poll: "Sondage #%{num}"
   notice_successful_scheduling_vote: Vote validé.
   notice_scheduling_poll_successful_create: "%{link_to_poll} créé pour cette demande."
   label_settings_scheduling_vote_value: "Réponse #%{num}"
