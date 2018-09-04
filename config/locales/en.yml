@@ -15,6 +15,7 @@ en:
   label_remove_scheduling_poll_item: Remove item
   label_add_scheduling_poll_item: Add item
   label_update_scheduling_poll_items: Update
+  label_link_scheduling_poll: "Scheduling poll #%{num}"
   notice_successful_scheduling_vote: Successful vote.
   notice_scheduling_poll_successful_create: "%{link_to_poll} created for the issue."
   label_settings_scheduling_vote_value: "Vote Value #%{num}"

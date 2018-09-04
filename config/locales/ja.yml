@@ -15,6 +15,7 @@ ja:
   label_remove_scheduling_poll_item: 項目の削除
   label_add_scheduling_poll_item: 項目の追加
   label_update_scheduling_poll_items: 更新
+  label_link_scheduling_poll: "スケジュール調整 #%{num}"
   notice_successful_scheduling_vote: 回答しました。
   notice_scheduling_poll_successful_create: "%{link_to_poll} がこのチケットに対して作成されました。"
   label_settings_scheduling_vote_value: "回答値 #%{num}"
