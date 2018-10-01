@@ -1,8 +1,8 @@
 <%# frozen_string_literal: true %>
 <% if @project.module_enabled?(:scheduling_polls) %>
 <hr />
-<% if User.current.allowed_to?(:view_schduling_polls, @project) %>
 <div class="scheduling_poll">
+<% if User.current.allowed_to?(:view_schduling_polls, @project) %>
 <% scheduling_poll = SchedulingPoll.find_by(:issue => @issue) %>
 <% if scheduling_poll %>
 <% vote_values = Hash[*SchedulingPollsController.helpers.scheduling_vote_values_array.flatten] %>
@@ -52,9 +52,9 @@
   </div>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>
-</div>
 <% else %>
   <p><strong><%=h l :label_scheduling_poll %></strong></p>
 <% end %>
+</div>
 
 <% end %><%# @project.module_enabled?(:scheduling_polls) %>
