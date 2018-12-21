@@ -6,8 +6,9 @@ require File.expand_path('test/ui/base', Rails.root)
 
 class Redmine::UiTest::SchedulingPollsTest < Redmine::UiTest::Base
   fixtures :users, :issues, :projects, :trackers,
-    :enabled_modules, :members, :member_roles, :roles,
-    :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+    :enabled_modules, :members, :member_roles, :roles
+  ActiveRecord::FixtureSet.create_fixtures(File.join(File.dirname(__FILE__), '../fixtures'),
+                                           [:scheduling_polls, :scheduling_poll_items, :scheduling_votes])
 
   def setup
     User.current = nil

@@ -2,7 +2,9 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollItemTest < ActiveSupport::TestCase
-  fixtures :projects, :issues, :roles, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+  fixtures :projects, :issues, :roles, :users
+  ActiveRecord::FixtureSet.create_fixtures(File.join(File.dirname(__FILE__), '../fixtures'),
+                                           [:scheduling_polls, :scheduling_poll_items, :scheduling_votes])
 
   test "shall not save scheduling poll item without scheduling poll" do
     scheduling_poll_item = SchedulingPollItem.new
