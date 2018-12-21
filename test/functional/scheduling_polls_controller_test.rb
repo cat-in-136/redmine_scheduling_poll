@@ -139,7 +139,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
     poll = SchedulingPoll.find_by(:issue => 1)
     refute_nil poll
-    patch :update, params({ :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1, :_destroy => 0}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0}, {:text => "text", :position => 4}, {:text => "", :position => 5}]} })
+    patch :update, params({ :id => 1, :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => [{:id => 1, :position => 1, :_destroy => 0, :text => SchedulingPollItem.find(1).text}, {:id => 2, :position => 2, :_destroy => 1}, {:id => 3, :position => 3, :_destroy => 0, :text => SchedulingPollItem.find(3).text}, {:text => "text", :position => 4}, {:text => "", :position => 5}]} })
     assert_equal "text", SchedulingPollItem.last.text
     assert_raise ActiveRecord::RecordNotFound do SchedulingPollItem.find(2) end
     assert_equal [SchedulingPollItem.find(1), SchedulingPollItem.find(3), SchedulingPollItem.last], poll.scheduling_poll_items.sorted.to_a
