@@ -2,12 +2,13 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingPollsControllerTest < ActionController::TestCase
-  NOT_EXIST_ITEM = 9999
+  include Redmine::PluginFixtureSetLoader
 
   fixtures :users, :issues, :projects, :trackers,
     :enabled_modules, :members, :member_roles, :roles
-  ActiveRecord::FixtureSet.create_fixtures(File.join(File.dirname(__FILE__), '../fixtures'),
-                                           [:scheduling_polls, :scheduling_poll_items, :scheduling_votes])
+  plugin_fixtures :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+
+  NOT_EXIST_ITEM = 9999
 
   def setup
     User.current = nil

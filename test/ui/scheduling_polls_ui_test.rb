@@ -5,10 +5,11 @@ return if Rails.version > "4" # do not run UI test for redmine4+
 require File.expand_path('test/ui/base', Rails.root)
 
 class Redmine::UiTest::SchedulingPollsTest < Redmine::UiTest::Base
+  include Redmine::PluginFixtureSetLoader
+
   fixtures :users, :issues, :projects, :trackers,
     :enabled_modules, :members, :member_roles, :roles
-  ActiveRecord::FixtureSet.create_fixtures(File.join(File.dirname(__FILE__), '../fixtures'),
-                                           [:scheduling_polls, :scheduling_poll_items, :scheduling_votes])
+  plugin_fixtures :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   def setup
     User.current = nil
