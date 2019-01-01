@@ -1,4 +1,4 @@
-class AddTimestampToSchedulingPollItemsAndFixTimestampOfSchedulingVotes < ActiveRecord::Migration
+class AddTimestampToSchedulingPollItemsAndFixTimestampOfSchedulingVotes < ((Rails.version > "5")? ActiveRecord::Migration[4.2] : ActiveRecord::Migration)
   def change
     change_table :scheduling_poll_items do |t|
       t.timestamps :null => true

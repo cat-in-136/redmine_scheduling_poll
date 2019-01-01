@@ -60,7 +60,7 @@ class SchedulingPollsController < ApplicationController
             flash[:notice] = l(:notice_successful_create)
             redirect_to @poll
           }
-          format.xml { render :text => "<scheduling_poll><status>ok</status><poll><id>#{@poll.id}</id></poll></scheduling_poll>" }
+          format.xml { return render :xml => {:status => :ok, :poll => { :id => @poll.id } }.to_xml(:root => :scheduling_poll) }
           format.json { render :json => { :status => :ok, :text => l(:notice_successful_create), :poll => { :id => @poll.id } } }
         end
       else

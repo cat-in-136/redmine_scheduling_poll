@@ -2,7 +2,10 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class SchedulingVoteTest < ActiveSupport::TestCase
-  fixtures :projects, :issues, :roles, :users, :scheduling_polls, :scheduling_poll_items, :scheduling_votes
+  include Redmine::PluginFixtureSetLoader
+
+  fixtures :projects, :issues, :roles, :users
+  plugin_fixtures :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
   test "shall not save scheduling vote without user" do
     scheduling_vote = SchedulingVote.new
