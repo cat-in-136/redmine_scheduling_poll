@@ -2,16 +2,18 @@ language: ruby
 cache: bundler
 matrix:
   include:
-    - rvm: 2.6.0
-      env: REDMINE_VERSION=4.0.1
-    - rvm: 2.5.3
-      env: REDMINE_VERSION=4.0.1
-    - rvm: 2.5.3
-      env: REDMINE_VERSION=3.4.8
-    - rvm: 2.4.5
-      env: REDMINE_VERSION=3.4.8
+    - rvm: ruby-head
+      env: REDMINE_VERSION=master
+    - rvm: 2.6.3
+      env: REDMINE_VERSION=4.0.3
+    - rvm: 2.5.5
+      env: REDMINE_VERSION=4.0.3
+    - rvm: 2.5.5
+      env: REDMINE_VERSION=3.4.10
+    - rvm: 2.4.6
+      env: REDMINE_VERSION=3.4.10
     - rvm: 2.3.8
-      env: REDMINE_VERSION=3.4.8
+      env: REDMINE_VERSION=3.4.10
     - rvm: 2.3.8
       env: REDMINE_VERSION=3.3.9
     - rvm: 2.2.10
@@ -24,6 +26,9 @@ matrix:
       env: REDMINE_VERSION=3.2.9
     - rvm: 2.1.10
       env: REDMINE_VERSION=3.2.9
+  allow_failures:
+    - rvm: ruby-head
+      env: REDMINE_VERSION=master
 cache:
   bundler: true
   directories:
