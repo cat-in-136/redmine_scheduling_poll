@@ -130,7 +130,7 @@ EOD
 </div>
 
 <ul class="scheduling-voting-result-timeline">
-<% ((@poll.votes.group(:user).maximum("COALESCE(scheduling_votes.updated_at, scheduling_votes.created_at)").to_a) +
+<% ((@poll.votes.includes(:user).group_by(&:user).map{|user,votes| [user, votes.map {|v| v.updated_at || v.created_at}.max ]}) +
     (@poll.scheduling_poll_items.map{|v| [v, v.updated_at || v.created_at]} )).reject{|v| v[1].nil? }.sort{|a,b| a[1] <=> b[1]}.each do |v| %>
   <% subject, datetime = v %>
   <% if subject.kind_of? User
