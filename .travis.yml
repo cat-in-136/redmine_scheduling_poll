@@ -4,16 +4,16 @@ matrix:
   include:
     - rvm: ruby-head
       env: REDMINE_VERSION=master
-    - rvm: 2.6.3
-      env: REDMINE_VERSION=4.0.3
-    - rvm: 2.5.5
-      env: REDMINE_VERSION=4.0.3
-    - rvm: 2.5.5
-      env: REDMINE_VERSION=3.4.10
-    - rvm: 2.4.6
-      env: REDMINE_VERSION=3.4.10
+    - rvm: 2.6.4
+      env: REDMINE_VERSION=4.0.4
+    - rvm: 2.5.6
+      env: REDMINE_VERSION=4.0.4
+    - rvm: 2.5.6
+      env: REDMINE_VERSION=3.4.11
+    - rvm: 2.4.7
+      env: REDMINE_VERSION=3.4.11
     - rvm: 2.3.8
-      env: REDMINE_VERSION=3.4.10
+      env: REDMINE_VERSION=3.4.11
     - rvm: 2.3.8
       env: REDMINE_VERSION=3.3.9
     - rvm: 2.2.10
