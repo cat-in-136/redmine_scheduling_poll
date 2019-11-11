@@ -120,7 +120,7 @@ class SchedulingPollsController < ApplicationController
   def show_by_issue
     ensure_allowed_to_view_scheduling_polls
     respond_to do |format|
-      format.html { rredirect_to scheduling_poll_path(@poll) }
+      format.html { redirect_to scheduling_poll_path(@poll) }
       format.api { render :action => :show }
     end
   end
