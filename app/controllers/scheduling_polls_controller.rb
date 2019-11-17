@@ -15,7 +15,7 @@ class SchedulingPollsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       return render_404
     end
-    return redirect_to @poll if @poll
+    return redirect_to scheduling_poll_path(@poll) if @poll
 
     @poll = SchedulingPoll.new(:issue => @issue)
     ensure_allowed_to_vote_scheduling_polls
@@ -39,7 +39,7 @@ class SchedulingPollsController < ApplicationController
     end
     if @poll
       respond_to do |format|
-        format.html { return redirect_to @poll }
+        format.html { return redirect_to scheduling_poll_path(@poll) }
         format.xml { return render :xml => {:status => :exist, :poll => { :id => @poll.id } }.to_xml(:root => :scheduling_poll) }
         format.json { return render :json => {:status => :exist, :poll => { :id => @poll.id } } }
       end
@@ -120,7 +120,7 @@ class SchedulingPollsController < ApplicationController
   def show_by_issue
     ensure_allowed_to_view_scheduling_polls
     respond_to do |format|
-      format.html { redirect_to @poll }
+      format.html { redirect_to scheduling_poll_path(@poll) }
       format.api { render :action => :show }
     end
   end
