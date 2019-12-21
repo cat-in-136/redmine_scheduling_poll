@@ -62,7 +62,9 @@
   <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment_fields").show();$(this).hide()', :class => 'icon icon-comment' %>
   <div id="vote_comment_fields" style="display: none;">
     <%= text_area_tag :vote_comment, '', :class => 'wiki-edit' %>
-    <%= wikitoolbar_for "vote_comment", preview_issue_path(:project_id => @poll.issue.project, :issue_id => @poll.issue.id) %>
+    <% if Redmine::VERSION::MAJOR >= 4 %><%# redmine >= 4.0 %>
+      <%= wikitoolbar_for "vote_comment", preview_issue_path(:project_id => @poll.issue.project, :issue_id => @poll.issue.id) %>
+    <% end %>
   </div>
 </div>
 <div>
