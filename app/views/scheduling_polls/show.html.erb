@@ -59,8 +59,13 @@
 </div>
 <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <div>
-  <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment").show();$(this).hide()', :class => 'icon icon-comment' %>
-  <%= text_area_tag :vote_comment, '', :style => 'display: none; width: 100%' %>
+  <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment_fields").show();$(this).hide()', :class => 'icon icon-comment' %>
+  <div id="vote_comment_fields" style="display: none;">
+    <%= text_area_tag :vote_comment, '', :class => 'wiki-edit' %>
+    <% if Redmine::VERSION::MAJOR >= 4 %><%# redmine >= 4.0 %>
+      <%= wikitoolbar_for "vote_comment", preview_issue_path(:project_id => @poll.issue.project, :issue_id => @poll.issue.id) %>
+    <% end %>
+  </div>
 </div>
 <div>
   <%= submit_tag l(:label_vote_on_scheduling_poll) %>
