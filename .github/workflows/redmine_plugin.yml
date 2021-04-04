@@ -13,6 +13,7 @@ jobs:
         mat_env:
         - '2.7 redmica/redmica@v1.2.0'
         - '2.7 redmine/redmine@4.2.0'
+        - '2.6 redmine/redmine@4.2.0'
         - '2.6 redmine/redmine@4.1.2'
         - '2.6 redmine/redmine@4.0.8'
         - '2.5 redmine/redmine@4.0.8'
@@ -71,6 +72,16 @@ jobs:
         key: ${{ runner.os }}-gems-${{ hashFiles('./redmine/**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-
+
+    - name: Use legacy bundler if ruby < 2.5
+      if: ${{ env.RUBY_VERSION < 2.5 }}
+      run: gem uninstall bundler && gem install bundler -v 1.17.3
+    - name: Mimemagic HACK for ruby 2.1/2.2
+      if: ${{ env.RUBY_VERSION < 2.3 }}
+      run: |
+        sed /mimemagic/d -i redmine/Gemfile
+        echo 'gem "mimemagic", :git => "https://github.com/powarvinayak/mimemagic.git", :branch => "patch-for-ruby-2.1"' >> redmine/Gemfile
+
     - name: Before script
       run: |
         cd ./redmine
