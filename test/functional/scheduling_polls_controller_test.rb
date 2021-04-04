@@ -4,7 +4,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class SchedulingPollsControllerTest < ActionController::TestCase
   include Redmine::PluginFixtureSetLoader
 
-  fixtures :users, :issues, :projects, :trackers,
+  fixtures :users, :issues, :projects, :trackers, :issue_statuses, :enumerations,
     :enabled_modules, :members, :member_roles, :roles
   plugin_fixtures :scheduling_polls, :scheduling_poll_items, :scheduling_votes
 
