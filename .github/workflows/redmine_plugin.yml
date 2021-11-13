@@ -11,10 +11,11 @@ jobs:
       fail-fast: false
       matrix:
         mat_env:
+        - '2.7 redmica/redmica@v2.0.0'
         - '2.7 redmica/redmica@v1.2.0'
-        - '2.7 redmine/redmine@4.2.0'
-        - '2.6 redmine/redmine@4.2.0'
-        - '2.6 redmine/redmine@4.1.2'
+        - '2.7 redmine/redmine@4.2.1'
+        - '2.6 redmine/redmine@4.2.1'
+        - '2.6 redmine/redmine@4.1.3'
         - '2.6 redmine/redmine@4.0.8'
         - '2.5 redmine/redmine@4.0.8'
         #- '2.5 redmine/redmine@3.4.13' # skip due to bundler error
