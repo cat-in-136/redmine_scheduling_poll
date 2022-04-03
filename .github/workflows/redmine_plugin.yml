@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         mat_env:
-        - '3.1 redmica/redmica@v2.0.0'
+        - '3.0 redmica/redmica@v2.0.0'
         - '2.7 redmica/redmica@v2.0.0'
         - '2.7 redmica/redmica@v1.2.0'
         - '3.1 redmine/redmine@5.0.0'
@@ -30,7 +30,7 @@ jobs:
         - '2.1 redmine/redmine@3.2.9'
         experimental: [false]
         include:
-          - mat_env: '3.1 redmica/redmica@master'
+          - mat_env: '3.0 redmica/redmica@master'
             experimental: true
     steps:
     - run: |
