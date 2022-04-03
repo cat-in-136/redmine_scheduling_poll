@@ -1,6 +1,6 @@
 require 'redmine'
-require_dependency 'redmine_scheduling_poll/hooks'
-require_dependency 'redmine_scheduling_poll/macros'
+require File.expand_path('../lib/redmine_scheduling_poll/hooks', __FILE__)
+require File.expand_path('../lib/redmine_scheduling_poll/macros', __FILE__)
 
 Redmine::Plugin.register :redmine_scheduling_poll do
   name 'Scheduling Poll plugin'
