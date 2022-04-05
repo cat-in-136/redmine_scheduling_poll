@@ -1,6 +1,5 @@
 require 'redmine'
 require File.expand_path('../lib/redmine_scheduling_poll/hooks', __FILE__)
-require File.expand_path('../lib/redmine_scheduling_poll/macros', __FILE__)
 
 Redmine::Plugin.register :redmine_scheduling_poll do
   name 'Scheduling Poll plugin'
@@ -28,4 +27,14 @@ Redmine::Plugin.register :redmine_scheduling_poll do
     'scheduling_vote_value_1' => 'NG',
     'scheduling_poll_item_date_format' => 'yy-mm-dd',
   }, :partial => 'settings/scheduling_poll_settings'
+
+  Redmine::WikiFormatting::Macros.register do
+    desc "Inserts a link to a scheduling poll (/scheduling_polls/:id/show). Example:\n\n" +
+        "{{scheduling_poll(1)}} -- link to /scheduling_polls/1/show"
+    macro :scheduling_poll do |obj, args|
+      id = args.first
+      scheduling_poll = SchedulingPoll.find(id)
+      link_to( l(:label_link_scheduling_poll, num: id), scheduling_poll_url(scheduling_poll))
+    end
+  end
 end
