@@ -1,4 +1,4 @@
-class FixTimestampOfSchedulingVotes < ((Rails.version > "5")? ActiveRecord::Migration[4.2] : ActiveRecord::Migration)
+class FixTimestampOfSchedulingVotes < ActiveRecord::Migration[4.2]
   def change
     reversible do |r|
       change_table :scheduling_votes do |t|

@@ -98,8 +98,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       refute_nil poll
       post :create, :params => { :scheduling_poll => {:issue_id => 1, :scheduling_poll_items_attributes => []}, :format => :xml, :key => User.current.api_key }
       assert_response :success
-      assert_equal 'application/xml', response.media_type if Rails.version >= '5'
-      assert_equal 'application/xml', response.content_type if Rails.version < '5'
+      assert_equal 'application/xml', response.media_type
       assert_match(/exist/, response.body)
 
       assert poll.destroy
@@ -110,8 +109,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
       assert_equal ["text1", "text2"], poll.scheduling_poll_items.map {|v| v.text }
       assert_equal [1, 2], poll.scheduling_poll_items.map {|v| v.position }
       assert_response :success
-      assert_equal 'application/xml', response.media_type if Rails.version >= '5'
-      assert_equal 'application/xml', response.content_type if Rails.version < '5'
+      assert_equal 'application/xml', response.media_type
       assert_match(/ok/, response.body)
     end
   end
@@ -206,8 +204,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
       get :show, :params => { :id => 1, :format => :xml, :key => User.current.api_key }
       assert_response :success
-      assert_equal 'application/xml', response.media_type if Rails.version >= '5'
-      assert_equal 'application/xml', response.content_type if Rails.version < '5'
+      assert_equal 'application/xml', response.media_type
 
       get :show, :params => { :id => NOT_EXIST_ITEM, :format => :json, :key => User.current.api_key }
       assert_response 404
@@ -251,8 +248,7 @@ class SchedulingPollsControllerTest < ActionController::TestCase
 
       get :show_by_issue, :params => { :issue_id => 1, :format => :xml, :key => User.current.api_key }
       assert_response :success
-      assert_equal 'application/xml', response.media_type if Rails.version >= '5'
-      assert_equal 'application/xml', response.content_type if Rails.version < '5'
+      assert_equal 'application/xml', response.media_type
 
       get :show_by_issue, :params => { :issue_id => NOT_EXIST_ITEM, :format => :json, :key => User.current.api_key }
       assert_response 404

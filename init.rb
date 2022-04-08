@@ -2,6 +2,8 @@ require 'redmine'
 require File.expand_path('../lib/redmine_scheduling_poll/hooks', __FILE__)
 
 Redmine::Plugin.register :redmine_scheduling_poll do
+  requires_redmine :version_or_higher => '4.0.0'
+
   name 'Scheduling Poll plugin'
   author '@cat_in_136'
   description 'provide simple polls to scheduling appointments'

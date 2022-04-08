@@ -1,4 +1,4 @@
-class CreateSchedulingVotes < ((Rails.version > "5")? ActiveRecord::Migration[4.2] : ActiveRecord::Migration)
+class CreateSchedulingVotes < ActiveRecord::Migration[4.2]
   def change
     create_table :scheduling_votes do |t|
       t.integer :user_id, :null => false
