@@ -22,7 +22,11 @@ class SchedulingPoll < ActiveRecord::Base
                             :timestamp => :created_at,
                             :permission => :view_schduling_polls,
                             :author_key => nil,
-                            :scope =>joins(:issue => :project)
+                            :scope => if Gem::Version.new([Redmine::VERSION::MAJOR, Redmine::VERSION::MINOR].join(".")) >= Gem::Version.new("4.2") # redmine >= 4.2
+                                        proc { joins(:issue => :project) }
+                                      else
+                                        joins(:issue => :project)
+                                      end
 
   def votes_by_user(user)
     self.votes.where(:user => user)
