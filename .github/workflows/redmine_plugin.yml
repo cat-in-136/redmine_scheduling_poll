@@ -62,7 +62,7 @@ jobs:
             adapter: sqlite3
             database: db/redmine_test.db
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: ./redmine/vendor/bundle
         key: ${{ runner.os }}-gems-${{ hashFiles('./redmine/**/Gemfile.lock') }}
