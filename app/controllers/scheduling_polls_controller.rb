@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class SchedulingPollsController < ApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   before_action :set_scheduling_poll, :only => [:edit, :update, :show, :vote]
   before_action :set_scheduling_poll_by_issue_id, :only => [:show_by_issue]
