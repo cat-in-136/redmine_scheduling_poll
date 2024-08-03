@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class SchedulingPollItem < ActiveRecord::Base
+class SchedulingPollItem < (defined?(ApplicationRecord) == 'constant' ? ApplicationRecord : ActiveRecord::Base)
   unloadable if respond_to?(:unloadable)
 
   belongs_to :scheduling_poll
