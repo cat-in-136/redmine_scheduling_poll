@@ -2,8 +2,8 @@
 schduling_polls_001:
   id: 1
   issue_id: 1
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 schduling_polls_002:
   id: 2
   issue_id: 2
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>

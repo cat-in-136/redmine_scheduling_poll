@@ -4,40 +4,40 @@ scheduling_vote_001:
   user_id: 1
   scheduling_poll_item_id: 1
   value: 3
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_002:
   id: 2
   user_id: 1
   scheduling_poll_item_id: 2
   value: 3
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_003:
   id: 3
   user_id: 1
   scheduling_poll_item_id: 3
   value: 3
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_004:
   id: 4
   user_id: 2
   scheduling_poll_item_id: 1
   value: 2
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_005:
   id: 5
   user_id: 2
   scheduling_poll_item_id: 2
   value: 3
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_006:
   id: 6
   user_id: 2
   scheduling_poll_item_id: 3
   value: 4
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
 scheduling_vote_007:
   id: 7
   user_id: 3
   scheduling_poll_item_id: 1
   value: 1
-  created_at: <%= 1.minute.ago.to_s(:db) %>
+  created_at: <%= 1.minute.ago %>
