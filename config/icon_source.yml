@@ -1,0 +1,14 @@
+- name: add
+  svg: circle-plus
+- name: edit
+  svg: edit
+- name: comment
+  svg: message
+- name: arrows-up
+  svg: arrows-up
+- name: arrow-up
+  svg: arrow-up
+- name: arrow-down
+  svg: arrow-down
+- name: arrows-down
+  svg: arrows-down

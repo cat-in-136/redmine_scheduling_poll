@@ -11,7 +11,12 @@
 
 <div id="scheduling-poll" class="box">
 <div class="contextual">
-  <%= link_to l(:label_edit_scheduling_poll_items), scheduling_poll_edit_url(@poll), :class => 'icon icon-edit' %>
+  <% if defined? scheduling_icon_with_label %><%# redmine >= 7.0 %>
+    <%= link_to(scheduling_icon_with_label('edit', l(:label_edit_scheduling_poll_items)),
+                scheduling_poll_edit_url(@poll), :class => 'icon icon-edit') %>
+  <% else %>
+    <%= link_to l(:label_edit_scheduling_poll_items), scheduling_poll_edit_url(@poll), :class => 'icon icon-edit' %>
+  <% end %>
 </div>
 <h3><%= @poll.issue.subject %></h3>
 
@@ -59,7 +64,12 @@
 </div>
 <% if User.current.allowed_to?(:vote_schduling_polls, @poll.issue.project) %>
 <div>
-  <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment_fields").show();$(this).hide()', :class => 'icon icon-comment' %>
+  <% if defined? scheduling_icon_with_label %><%# redmine >= 7.0 %>
+    <%= link_to_function(scheduling_icon_with_label('comment', l(:label_add_comment_with_scheduling_poll_vote)),
+                         '$("#vote_comment_fields").show();$(this).hide()', :class => 'icon icon-comment') %>
+  <% else %>
+    <%= link_to_function l(:label_add_comment_with_scheduling_poll_vote), '$("#vote_comment_fields").show();$(this).hide()', :class => 'icon icon-comment' %>
+  <% end %>
   <div id="vote_comment_fields" style="display: none;">
     <%= text_area_tag :vote_comment, '', :class => 'wiki-edit' %>
     <% if Redmine::VERSION::MAJOR >= 4 %><%# redmine >= 4.0 %>
