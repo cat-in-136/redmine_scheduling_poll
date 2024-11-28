@@ -9,7 +9,7 @@
   <%= f_item.hidden_field :position, :value => f_item.index %>
 </td>
 <td class="reorder">
-  <% if defined? scheduling_icon_with_label %><%# redmine >= 7.0 %>
+  <% if defined? scheduling_icon_with_label %><%# redmine >= 6.0 %>
     <%= link_to_function(scheduling_icon_with_label('arrows-up', l(:label_sort_highest)),
                          "scheduling_poll_move_item_position(-2, #{f_item.index})", :title => l(:label_sort_highest),
                          :class => 'icon-only icon-arrows-up') %>
