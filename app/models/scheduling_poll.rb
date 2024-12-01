@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-class SchedulingPoll < ActiveRecord::Base
-  unloadable
+class SchedulingPoll < (defined?(ApplicationRecord) == 'constant' ? ApplicationRecord : ActiveRecord::Base)
+  unloadable if respond_to?(:unloadable)
 
   belongs_to :issue
   has_many :scheduling_poll_items, :dependent => :destroy

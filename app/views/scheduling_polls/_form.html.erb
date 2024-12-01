@@ -22,7 +22,13 @@
   <tfoot>
   <tr>
   <td colspan="3">
-    <%= link_to_function l(:label_add_scheduling_poll_item), "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
+    <% if defined? scheduling_icon_with_label %><%# redmine >= 6.0 %>
+      <%= link_to_function(scheduling_icon_with_label('add', l(:label_add_scheduling_poll_item)),
+                           "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")",
+                           :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link') %>
+    <% else %>
+      <%= link_to_function l(:label_add_scheduling_poll_item), "scheduling_polls_add_item(\"#{escape_javascript(add_item_tmpl)}\")", :class => 'icon icon-add', :id => 'scheduling_poll_add_item_link' %>
+    <% end %>
   </td>
   </tr>
   </tfoot>
@@ -33,6 +39,7 @@
   <%= f.submit l(:label_update_scheduling_poll_items) %>
 </div>
 
+<% include_calendar_headers_tags %>
 <%= javascript_tag <<EOD
 function scheduling_polls_update_date_picker(enable) {
   "use strict";
@@ -42,13 +49,10 @@ function scheduling_polls_update_date_picker(enable) {
     enable = ($("form .ui-datepicker-trigger").length > 0)? false : true;
   }
   if (enable) {
-    $("form .scheduling_poll_item_text:not([disabled]):not([readonly])").datepicker({
+    $("form .scheduling_poll_item_text:not([disabled]):not([readonly])").datepicker($.extend(datepickerOptions, {
       dateFormat: '#{Setting.plugin_redmine_scheduling_poll["scheduling_poll_item_date_format"]}',
-      showOn: 'button', buttonImageOnly: true,
-      buttonImage: '#{path_to_image('/images/calendar.png')}',
-      showButtonPanel: true, showWeek: true, showOtherMonths: true,
-      selectOtherMonths: true, changeMonth: true, changeYear: true
-    });
+      showOn: 'button', buttonImageOnly: true
+    }));
   } else {
     $("form .scheduling_poll_item_text").datepicker("destroy");
   }

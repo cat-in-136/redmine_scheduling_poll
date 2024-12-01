@@ -46,4 +46,14 @@ module SchedulingPollsHelper
     s.html_safe
   end
 
+  if defined? IconsHelper # redmine >= 6.0
+    include IconsHelper
+    def scheduling_icon_with_label(icon_name, label_text, icon_only: false, size: 18, css_class: nil)
+      label_classes = ["icon-label"]
+      label_classes << "hidden" if icon_only
+      plugin = 'redmine_scheduling_poll'
+      sprite_icon(icon_name, size: size, css_class: css_class, plugin: plugin) + content_tag(:span, label_text, class: label_classes.join(' '))
+    end
+  end
+
 end

@@ -24,6 +24,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/cat-in
 
 == License
 
-MIT License.
-See the 'LICENSE.md' file.
+* Codes: MIT License.
+* Legacy Icons: famfamfam-silk: {CC-By-2.5}[https://creativecommons.org/licenses/by/2.5/] by Mark James http://www.famfamfam.com/lab/icons/silk/
+* Vector Icons: {Tabler Icons}[https://tabler.io/]: MIT License
 
